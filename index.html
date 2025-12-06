@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>BrightPath — Full App (Voice Assistant + Personalization)</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root{--p1:#6b21a8;--p2:#c77dff}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:linear-gradient(135deg,#89cff0,#b39ddb,#ffb74d);color:#102027}
+    .app{max-width:1200px;margin:18px auto;display:flex;gap:18px}
+    .sidebar{width:88px;background:linear-gradient(180deg,var(--p1),#7b2fb6);border-radius:12px;padding:12px;color:#fff}
+    .nav{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+    .nav button{background:transparent;border:none;color:rgba(255,255,255,0.95);padding:10px;border-radius:10px;cursor:pointer}
+    .nav button.active{background:rgba(255,255,255,0.08)}
+    .page-wrap{flex:1}
+    .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+    .title{font-size:18px;color:#fff}
+    .content{background:rgba(255,255,255,0.06);padding:16px;border-radius:12px;color:#fff;min-height:520px}
+    .grid{display:grid;grid-template-columns:1fr 340px;gap:16px}
+    .card{background:linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02));padding:12px;border-radius:10px}
+    .stat-grid{display:flex;gap:12px}
+    .stat{flex:1;background:rgba(255,255,255,0.03);padding:12px;border-radius:8px;text-align:center}
+    textarea{width:100%;min-height:100px;padding:10px;border-radius:10px;border:none;resize:vertical}
+    .entry{background:rgba(255,255,255,0.03);padding:10px;border-radius:10px;margin-top:8px}
+    .qm{cursor:pointer;user-select:none;transition:transform .18s,box-shadow .18s}
+    .qm.selected{transform:scale(1.28);box-shadow:0 8px 30px rgba(155,89,182,0.45),0 0 18px rgba(199,125,255,0.45);animation:bounce 420ms}
+    @keyframes bounce{0%{transform:scale(.9)}50%{transform:scale(1.35)}100%{transform:scale(1.28)}}
+    #modalOverlay{position:fixed;left:0;top:0;width:100%;height:100%;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,0.45);z-index:10000}
+    .modal{width:92%;max-width:520px;background:linear-gradient(135deg,var(--p1),var(--p2));color:white;padding:18px;border-radius:12px}
+    .page{display:none;opacity:0;transform:scale(.96);transition:opacity .32s,transform .32s}
+    .page.active{display:block;opacity:1;transform:scale(1)}
+    canvas{max-width:100%;background:transparent}
+    .bp-toast{position:fixed;right:18px;bottom:18px;background:rgba(12,22,30,0.95);color:#fff;padding:10px 12px;border-radius:8px;z-index:9999}
+    .small{font-size:12px;opacity:0.9}
+    .controls{display:flex;gap:8px;align-items:center}
+    .btn{padding:8px 12px;border-radius:10px;border:none;cursor:pointer}
+    input[type=file]{color:#fff}
+    .avatar-preview{width:64px;height:64px;border-radius:50%;background:#fff;color:#000;display:flex;align-items:center;justify-content:center;font-weight:800}
+  </style>
+</head>
+<body>
+  <canvas id="confettiCanvas" style="position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:998"></canvas>
+  <div class="app">
+    <aside class="sidebar">
+      <div style="font-weight:800;font-size:18px;">BP</div>
+      <nav class="nav" id="nav">
+        <button data-page="dashboard" class="active">🏠<div style="font-size:11px">Dashboard</div></button>
+        <button data-page="analytics">📊<div style="font-size:11px">Analytics</div></button>
+        <button data-page="journal">📘<div style="font-size:11px">Journal</div></button>
+        <button data-page="breathing">🌬<div style="font-size:11px">Breath</div></button>
+        <button data-page="achievements">🏅<div style="font-size:11px">Badges</div></button>
+        <button data-page="settings">⚙<div style="font-size:11px">Settings</div></button>
+      </nav>
+    </aside>
+
+    <main class="page-wrap">
+      <div class="topbar"><div class="title" id="appTitle">BrightPath — Wellness</div><div style="color:rgba(255,255,255,0.9)" id="welcomeSmall">Local & private</div></div>
+      <div id="pageContainer">
+        <section id="dashboard" class="page active">
+          <div class="content card">
+            <div class="grid">
+              <div>
+                <div class="stat-grid">
+                  <div class="stat">Today's mood<br/><div id="todayMoodLarge" style="font-size:28px;margin-top:8px">—</div></div>
+                  <div class="stat">Streak<br/><div id="streakCount" style="font-size:20px;margin-top:8px">0</div></div>
+                  <div class="stat">Positive Streak<br/><div id="posStreak" style="font-size:20px;margin-top:8px">0</div></div>
+                </div>
+
+                <div style="margin-top:12px" class="card">
+                  <div style="display:flex;justify-content:space-between;align-items:center"><strong>Quick Mood</strong><div class="small">Tap to save</div></div>
+                  <div id="quickEmoji" style="font-size:28px;margin-top:8px;display:flex;gap:10px">
+                    <span class="qm" data-emo="😊">😊</span>
+                    <span class="qm" data-emo="😐">😐</span>
+                    <span class="qm" data-emo="😔">😔</span>
+                    <span class="qm" data-emo="😣">😣</span>
+                    <span class="qm" data-emo="🤩">🤩</span>
+                    <span class="qm" data-emo="😡">😡</span>
+                  </div>
+                </div>
+
+                <div style="margin-top:12px" class="card">
+                  <strong>Quick Actions</strong>
+                  <div class="controls" style="margin-top:8px">
+                    <button class="btn" id="gotoJournal">New Journal</button>
+                    <button class="btn" id="gotoBreath">Start Breathing</button>
+                    <button class="btn" id="gotoAnalytics">View Analytics</button>
+                  </div>
+                </div>
+              </div>
+
+              <aside>
+                <div class="card">
+                  <strong>Achievements</strong>
+                  <div id="dashBadges" style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"></div>
+                </div>
+
+                <div class="card" style="margin-top:12px">
+                  <strong>Wellness Score</strong>
+                  <div id="wellnessScore" style="font-size:28px;margin-top:8px">—</div>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </section>
+
+        <section id="analytics" class="page">
+          <div class="content card">
+            <h3>Mood Over Time</h3>
+            <canvas id="lineChart" width="800" height="240"></canvas>
+            <h3 style="margin-top:12px">Mood Distribution</h3>
+            <canvas id="pieChart" width="400" height="200"></canvas>
+            <div style="margin-top:12px" class="card"><strong>Weekly Wellness</strong><div id="weeklyText" style="margin-top:8px">—</div></div>
+          </div>
+        </section>
+
+        <section id="journal" class="page">
+          <div class="content card">
+            <h3>Journal</h3>
+            <textarea id="journalInput" placeholder="Write something about your day..."></textarea>
+            <div style="display:flex;gap:8px;margin-top:8px"><button class="btn" id="saveEntry">Add Entry</button><button class="btn" id="clearJournal">Clear All</button></div>
+            <div id="entriesWrap" style="margin-top:12px"></div>
+          </div>
+        </section>
+
+        <section id="breathing" class="page">
+          <div class="content card">
+            <h3>Breathing (voice-guided available)</h3>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+              <div id="breathCircle" style="width:160px;height:160px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#c77dff,#6b21a8);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700">Breathe</div>
+              <div id="breathText" style="opacity:0.9">Press Start</div>
+              <div style="display:flex;gap:8px"><button class="btn" id="startBreath">Start</button><button class="btn" id="stopBreath">Stop</button></div>
+              <label><input type="checkbox" id="voiceGuide" /> Enable voice-guided breathing</label>
+            </div>
+          </div>
+        </section>
+
+        <section id="achievements" class="page">
+          <div class="content card"><h3>Achievements</h3><div id="achieveGrid" style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"></div></div>
+        </section>
+
+        <section id="settings" class="page">
+          <div class="content card">
+            <h3>Settings & Personalization</h3>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <label><input type="checkbox" id="darkToggle" /> Enable Dark Mode</label>
+
+              <label>Your Name
+                <input type="text" id="userNameInput" placeholder="Enter your name" style="width:100%;padding:8px;border-radius:8px;border:none;margin-top:4px" />
+              </label>
+              <div style="display:flex;gap:8px;align-items:center">
+                <button class="btn" id="saveName">Save Name</button>
+                <button class="btn" id="testVoice">Test Voice Greeting</button>
+              </div>
+
+              <div style="display:flex;gap:8px;align-items:center">
+                <div class="avatar-preview" id="avatarPreview">A</div>
+                <input type="file" id="avatarFile" accept="image/*" />
+                <button class="btn" id="saveAvatar">Save Avatar</button>
+              </div>
+
+              <div>
+                <label class="small">Assistant voice</label>
+                <select id="voiceSelect"></select>
+              </div>
+
+              <div>
+                <button class="btn" id="exportBtn">Export Data</button>
+                <input type="file" id="importFile" style="display:inline-block;margin-left:8px" />
+              </div>
+
+              <div>
+                <label class="small">Daily reminder time (local)</label>
+                <input type="time" id="dailyTime" />
+                <button class="btn" id="saveDaily">Save</button>
+              </div>
+
+              <div>
+                <label><input type="checkbox" id="voiceAssistantToggle" /> Enable voice assistant mode (speaks supportive messages)</label>
+                <label><input type="checkbox" id="voiceOnSave" /> Voice feedback when saving mood</label>
+                <label><input type="checkbox" id="backgroundSoundToggle" /> Play calming background sound</label>
+                <select id="bgSoundSelect"><option value="none">None</option><option value="rain">Rain</option><option value="ocean">Ocean</option><option value="flute">Flute</option></select>
+                <label><input type="checkbox" id="meditationToggle" /> Enable Meditation Voice Mode</label>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <div id="modalOverlay"><div class="modal" id="modal"><h3 id="modalTitle">Title</h3><div id="modalBody"></div><div id="modalActions" style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px"></div></div></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', ()=>{
+      // keys
+      const KEY_MOODS='bp_moods_v3', KEY_BADGES='bp_badges_v3', KEY_JOURNAL='bp_journal_v1', KEY_STREAK='bp_streak_v1', KEY_POS='bp_positive_streak_v1', KEY_LAST='bp_last_selected', KEY_DAILY='bp_daily_time', KEY_USERNAME='bp_username', KEY_AVATAR='bp_avatar', KEY_THEME='bp_theme', KEY_SETTINGS='bp_settings_v1', KEY_MEDITATION='bp_meditation_voice';
+      function load(k,f){try{const v=localStorage.getItem(k);return v?JSON.parse(v):f}catch(e){return f}} function save(k,v){localStorage.setItem(k,JSON.stringify(v));}
+
+      // modal
+      const modalOverlay = document.getElementById('modalOverlay'); const modalTitle=document.getElementById('modalTitle'); const modalBody=document.getElementById('modalBody'); const modalActions=document.getElementById('modalActions');
+      function openModal(){ modalOverlay.style.display='flex'; } function closeModal(){ modalOverlay.style.display='none'; modalActions.innerHTML=''; }
+      function infoModal(t,h){ modalTitle.innerText=t; modalBody.innerHTML=h; modalActions.innerHTML='<button class="btn" id="mClose">Close</button>'; openModal(); document.getElementById('mClose').addEventListener('click', closeModal);} 
+      function confirmModal(t,h,yes,no){ modalTitle.innerText=t; modalBody.innerHTML=h; modalActions.innerHTML='<button class="btn" id="mNo">Cancel</button><button class="btn" id="mYes">Yes</button>'; openModal(); document.getElementById('mYes').addEventListener('click', ()=>{ closeModal(); if(yes) yes(); }); document.getElementById('mNo').addEventListener('click', ()=>{ closeModal(); if(no) no(); }); }
+
+      // basic defs
+      const badgeDefs = { 'streak_3':{emoji:'🥉',title:'Bronze Streak'}, 'streak_7':{emoji:'🥈',title:'Silver Streak'}, 'streak_14':{emoji:'🥇',title:'Gold Streak'}, 'streak_30':{emoji:'🏆',title:'Trophy Streak'}, 'positive_5':{emoji:'⭐',title:'Positive Mindset'}, 'total_10':{emoji:'🎯',title:'Consistency'}, 'total_25':{emoji:'🌟',title:'Commitment'}, 'total_50':{emoji:'🔱',title:'Elite'}, 'total_100':{emoji:'🏅',title:'Century Club'}, 'resilience_5neg':{emoji:'💪',title:'Resilient'}};
+
+      // rendering
+      function renderDashboard(){ const moods=load(KEY_MOODS,[]); const badges=load(KEY_BADGES,[]); const dash=document.getElementById('dashBadges'); if(dash) dash.innerHTML=''; (badges||[]).forEach(id=>{ const info=badgeDefs[id]||{emoji:'🏅',title:id}; const el=document.createElement('div'); el.style.background='rgba(255,255,255,0.08)'; el.style.padding='6px 8px'; el.style.borderRadius='999px'; el.innerText=info.emoji+' '+info.title; dash.appendChild(el); }); const today=document.getElementById('todayMoodLarge'); if(today) today.innerText = moods.length?moods[moods.length-1].mood:'—'; const sc=document.getElementById('streakCount'); if(sc) sc.innerText = (load(KEY_STREAK,{streak:0}).streak||0); const ps=document.getElementById('posStreak'); if(ps) ps.innerText = load(KEY_POS,0)||0; computeWellness(); }
+
+      // voice & audio setup
+      const synth = window.speechSynthesis; let voices = [];
+      function refreshVoices(){ voices = synth.getVoices(); const sel=document.getElementById('voiceSelect'); if(!sel) return; sel.innerHTML=''; voices.forEach((v,i)=>{ const opt=document.createElement('option'); opt.value=i; opt.innerText = v.name + (v.lang?(' ('+v.lang+')'):'' ); sel.appendChild(opt); }); }
+      window.speechSynthesis.onvoiceschanged = refreshVoices; refreshVoices();
+
+      function speak(text,opts={}){
+        try{
+          if(!('speechSynthesis' in window)) return;
+          const u = new SpeechSynthesisUtterance(text);
+          if(opts.voiceIndex!==undefined && voices[opts.voiceIndex]) u.voice = voices[opts.voiceIndex];
+          if(opts.pitch) u.pitch = opts.pitch; if(opts.rate) u.rate = opts.rate; u.volume = opts.volume||1; synth.speak(u);
+        }catch(e){console.warn('speak err',e)}
+      }
+
+      // sound backgrounds (simple audio files, use small assets from public CDN)
+      const bgAudio = new Audio(); bgAudio.loop = true; const bgMap = { rain:'https://cdn.jsdelivr.net/gh/fawazahmed0/sounds@main/rain.mp3', ocean:'https://cdn.jsdelivr.net/gh/fawazahmed0/sounds@main/ocean.mp3', flute:'https://cdn.jsdelivr.net/gh/fawazahmed0/sounds@main/flute.mp3' };
+
+      // selected emoji handling + feedback
+      const quickEmoji = document.getElementById('quickEmoji'); const lastSelected = load(KEY_LAST,null);
+      if(lastSelected) setTimeout(()=>{ setSelectedByEmoji(lastSelected); },200);
+      function setSelectedByEmoji(emo){ document.querySelectorAll('.qm').forEach(el=>el.classList.remove('selected')); const el=document.querySelector('.qm[data-emo="'+emo+'"]'); if(el) el.classList.add('selected'); }
+      function playClickTone(){ try{ const ctx = new (window.AudioContext||window.webkitAudioContext)(); const o = ctx.createOscillator(); const g = ctx.createGain(); o.type='sine'; o.frequency.value = 880; g.gain.value = 0.02; o.connect(g); g.connect(ctx.destination); o.start(); setTimeout(()=>{ o.stop(); ctx.close(); },80); }catch(e){} }
+      function doVibrate(){ if(navigator.vibrate) navigator.vibrate(30); }
+
+      if(quickEmoji){ quickEmoji.addEventListener('click', (e)=>{ const t=e.target; if(!t||!t.classList||!t.classList.contains('qm')) return; const mood = t.getAttribute('data-emo')||t.innerText.trim(); if(!mood) return; setSelectedByEmoji(mood); save(KEY_LAST,mood); playClickTone(); doVibrate(); // voice on save if enabled
+          const settings = load(KEY_SETTINGS,{}); if(settings.voiceOnSave) speak('Mood saved'); saveMood(mood); }); }
+
+      // save mood
+      function saveMood(mood){ const arr = load(KEY_MOODS,[]); const entry = {mood,ts:Date.now()}; arr.push(entry); save(KEY_MOODS,arr); renderDashboard(); checkAndUnlockBadges(entry); const settings = load(KEY_SETTINGS,{}); if(settings.voiceAssistant) aiResponse(entry); showToast('Mood saved'); }
+
+      // journal
+      function renderJournal(){ const wrap=document.getElementById('entriesWrap'); if(!wrap) return; wrap.innerHTML=''; const arr=load(KEY_JOURNAL,[]); arr.slice().reverse().forEach((en,i)=>{ const d=document.createElement('div'); d.className='entry'; d.innerHTML = '<div style="font-size:12px;opacity:0.9">'+new Date(en.ts).toLocaleString()+'</div><div style="margin-top:6px">'+escapeHtml(en.text)+'</div><div style="margin-top:8px;text-align:right"><button class="btn del" data-i="'+(arr.length-1-i)+'">Delete</button></div>'; wrap.appendChild(d); }); wrap.querySelectorAll('button.del').forEach(b=>b.addEventListener('click',(ev)=>{ const idx=Number(ev.target.dataset.i); confirmModal('Delete Entry','Delete this journal entry?', ()=>{ const a=load(KEY_JOURNAL,[]); a.splice(idx,1); save(KEY_JOURNAL,a); renderJournal(); }, ()=>{}); })); }
+      document.getElementById('saveEntry').addEventListener('click', ()=>{ const el=document.getElementById('journalInput'); const txt=el?el.value.trim():''; if(!txt) return infoModal('Empty','Write something before saving'); const arr=load(KEY_JOURNAL,[]); arr.push({text:txt,ts:Date.now()}); save(KEY_JOURNAL,arr); if(el) el.value=''; renderJournal(); showToast('Journal saved'); });
+      document.getElementById('clearJournal').addEventListener('click', ()=>{ confirmModal('Clear Journal','Remove all entries?', ()=>{ save(KEY_JOURNAL,[]); renderJournal(); showToast('Journal cleared'); }, ()=>{}); });
+
+      // charts (Chart.js)
+      let lineChart=null, pieChart=null;
+      function initCharts(){ try{ const ctx=document.getElementById('lineChart').getContext('2d'); const pctx=document.getElementById('pieChart').getContext('2d'); if(lineChart) lineChart.destroy(); if(pieChart) pieChart.destroy(); lineChart = new Chart(ctx,{type:'line',data:{labels:[],datasets:[{label:'Mood',data:[],tension:0.4,backgroundColor:'rgba(199,125,255,0.12)',borderColor:'#c77dff',pointRadius:4}]},options:{scales:{y:{min:0,max:4,ticks:{stepSize:1}}},plugins:{legend:{display:false}}}}); pieChart = new Chart(pctx,{type:'doughnut',data:{labels:[],datasets:[{data:[],backgroundColor:['#c77dff','#9b59b6','#6be4ff','#ffb74d','#ff6b6b','#81f783']}]},options:{plugins:{legend:{position:'bottom'}}}}); }catch(e){console.warn('Chart init',e);} }
+      function drawAnalytics(){ const moods=load(KEY_MOODS,[]); initCharts(); if(!lineChart||!pieChart) return; if(moods.length===0){ lineChart.data.labels=['No data']; lineChart.data.datasets[0].data=[0]; lineChart.update(); pieChart.data.labels=[]; pieChart.data.datasets[0].data=[]; pieChart.update(); document.getElementById('weeklyText').innerText='No data'; return; } const mapVal=m=> (m==='🤩'||m==='😊')?4:(m==='😐')?2:(m==='😔'||m==='😣')?1:0; const last30=moods.slice(-30); lineChart.data.labels = last30.map(x=>new Date(x.ts).toLocaleDateString()); lineChart.data.datasets[0].data = last30.map(x=>mapVal(x.mood)); lineChart.update(); const counts={'😊':0,'🤩':0,'😐':0,'😔':0,'😣':0,'😡':0}; moods.forEach(m=>{ if(counts[m.mood]!==undefined) counts[m.mood]++; }); pieChart.data.labels = Object.keys(counts); pieChart.data.datasets[0].data = Object.values(counts); pieChart.update(); const last7=moods.slice(-7); const avg=last7.reduce((s,i)=>s+mapVal(i.mood),0)/(last7.length||1); const txt=(avg>=3.5)?'Excellent':(avg>=2.5)?'Good':(avg>=1.5)?'Average':'Low'; if(document.getElementById('weeklyText')) document.getElementById('weeklyText').innerText=txt; if(document.getElementById('wellnessScore')) document.getElementById('wellnessScore').innerText=txt; }
+
+      // breathing w/ voice guidance
+      let breathTimer=null, breathPhase=0;
+      function startBreathing(){
+        if(breathTimer) return;
+        const seq=[4,7,8];
+        const shortText=['Breathe in','Hold','Breathe out'];
+        const medText=['Slowly breathe in... let your lungs fill completely...','Hold your breath gently... stay relaxed...','Now slowly breathe out... release all tension from your body...'];
+        const circle=document.getElementById('breathCircle');
+        const text=document.getElementById('breathText');
+        try{ if(typeof audioCtx !== 'undefined' && audioCtx && audioCtx.state === 'suspended') audioCtx.resume().catch(()=>{}); }catch(e){}
+        const settings = load(KEY_SETTINGS,{});
+        const medMode = load(KEY_MEDITATION,false);
+        const voiceGuide = settings.voiceGuide || false;
+
+        function playPhaseTone(phase){
+          try{
+            const ctx = new (window.AudioContext||window.webkitAudioContext)();
+            const o = ctx.createOscillator();
+            const g = ctx.createGain();
+            o.connect(g); g.connect(ctx.destination);
+            if(phase===0){ o.frequency.value = 520; g.gain.value = 0.02; }
+            else if(phase===1){ o.frequency.value = 440; g.gain.value = 0.01; }
+            else { o.frequency.value = 320; g.gain.value = 0.02; }
+            o.start();
+            setTimeout(()=>{ o.stop(); ctx.close(); },130);
+          }catch(e){}
+        }
+
+        function step(){
+          const dur = seq[breathPhase]*1000;
+          if(circle) circle.style.transition='transform '+dur+'ms ease-in-out';
+          if(breathPhase===0 && circle) circle.style.transform='scale(1.24)';
+          else if(breathPhase===1 && circle) circle.style.transform='scale(1.12)';
+          else if(circle) circle.style.transform='scale(0.86)';
+          if(text) text.innerText = medMode ? medText[breathPhase] : shortText[breathPhase];
+          playPhaseTone(breathPhase);
+          if(voiceGuide && ('speechSynthesis' in window)){
+            try{ speechSynthesis.cancel(); }catch(e){}
+            const toSpeak = medMode ? medText[breathPhase] : shortText[breathPhase];
+            setTimeout(()=>{ speak(toSpeak); }, 80);
+          }
+          breathPhase = (breathPhase+1)%3;
+          breathTimer = setTimeout(step, dur);
+        }
+
+        breathPhase = 0;
+        step();
+      }
+
+      function stopBreathing(){ if(breathTimer) clearTimeout(breathTimer); breathTimer=null; const circle=document.getElementById('breathCircle'); const text=document.getElementById('breathText'); if(circle) circle.style.transform='scale(1)'; if(text) text.innerText='Press Start'; }
+      document.getElementById('startBreath').addEventListener('click', ()=>{ startBreathing(); });
+      document.getElementById('stopBreath').addEventListener('click', ()=>{ stopBreathing(); });
+
+      // badges & streaks
+      function dateKey(ts){ const d=new Date(ts); return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
+      function checkAndUnlockBadges(newEntry){ const streakData=load(KEY_STREAK,{lastDate:null,streak:0}); const lastKey=streakData.lastDate; const todayKey=dateKey(newEntry.ts); if(!lastKey){ streakData.lastDate=todayKey; streakData.streak=1; } else { const lp=lastKey.split('-'); const lastDate=new Date(Number(lp[0]),Number(lp[1])-1,Number(lp[2])); const tDate=new Date(new Date(newEntry.ts).getFullYear(),new Date(newEntry.ts).getMonth(),new Date(newEntry.ts).getDate()); const diff=Math.round((tDate-lastDate)/(24*3600*1000)); if(diff===1){ streakData.streak+=1; streakData.lastDate=todayKey; } else if(diff>1){ streakData.streak=1; streakData.lastDate=todayKey; } } save(KEY_STREAK,streakData); let pos=load(KEY_POS,0); if(newEntry.mood==='😊'||newEntry.mood==='🤩') pos+=1; else pos=0; save(KEY_POS,pos); const moods=load(KEY_MOODS,[]); const total=moods.length; const badges=load(KEY_BADGES,[]); const addBadge = id=>{ if(!badges.includes(id)){ badges.push(id); save(KEY_BADGES,badges); renderAchievements(); showConfettiOnce(); successModal('Achievement','You unlocked: '+(badgeDefs[id]?badgeDefs[id].emoji+' '+badgeDefs[id].title:id)); }}; if(streakData.streak>=3) addBadge('streak_3'); if(streakData.streak>=7) addBadge('streak_7'); if(streakData.streak>=14) addBadge('streak_14'); if(streakData.streak>=30) addBadge('streak_30'); if(pos>=5) addBadge('positive_5'); if(total>=10) addBadge('total_10'); if(total>=25) addBadge('total_25'); if(total>=50) addBadge('total_50'); if(total>=100) addBadge('total_100'); const negCount = moods.slice().reverse().slice(0,10).filter(x=>x.mood==='😔'||x.mood==='😣').length; if(negCount>=5) addBadge('resilience_5neg'); renderDashboard(); }
+      function renderAchievements(){ const c=document.getElementById('achieveGrid'); if(!c) return; c.innerHTML=''; const arr=load(KEY_BADGES,[]); arr.forEach(id=>{ const info=badgeDefs[id]||{emoji:'🏅',title:id}; const d=document.createElement('div'); d.style.display='flex'; d.style.flexDirection='column'; d.style.alignItems='center'; d.style.width='100px'; d.innerHTML='<div style="font-size:28px">'+info.emoji+'</div><div style="margin-top:6px;font-weight:700">'+info.title+'</div>'; c.appendChild(d); }); }
+
+      // confetti
+      const confCanvas = document.getElementById('confettiCanvas'); if(confCanvas){ confCanvas.width=window.innerWidth; confCanvas.height=window.innerHeight; }
+      let confTimer=null; function showConfettiOnce(){ if(!confCanvas) return; if(confTimer) return; const ctx=confCanvas.getContext('2d'); let parts=[]; for(let i=0;i<60;i++){ parts.push({x:confCanvas.width/2,y:confCanvas.height/2,vx:(Math.random()-0.5)*8,vy:(Math.random()-0.8)*8,size:4+Math.random()*6,color:['#ff6b6b','#ffd93d','#6be4ff','#9b59b6','#81f783'][Math.floor(Math.random()*5)]}); } let t=0; confTimer=setInterval(()=>{ ctx.clearRect(0,0,confCanvas.width,confCanvas.height); parts.forEach(p=>{ p.x+=p.vx; p.y+=p.vy; p.vy+=0.2; ctx.fillStyle=p.color; ctx.fillRect(p.x,p.y,p.size,p.size); }); t++; if(t>80){ clearInterval(confTimer); confTimer=null; ctx.clearRect(0,0,confCanvas.width,confCanvas.height); } },16); }
+
+      // aiResponse
+      function aiResponse(entry){ const m=entry.mood; const settings = load(KEY_SETTINGS,{}); if(m==='😔'||m==='😣'){ if(settings.voiceAssistant) speak('I\'m here for you. Try a 2-minute breathing exercise or write one small thing you\'re grateful for.'); infoModal('Support','I\'m here for you. Try a breathing exercise or write one small gratitude.'); } else if(m==='😡'){ if(settings.voiceAssistant) speak('Take a moment and take 3 slow breaths.'); infoModal('Take a moment','Try 3 slow breaths.'); } else if(m==='😊'||m==='🤩'){ if(settings.voiceAssistant) speak('Nice! Keep going — your positive streak helps.'); successModal('Nice!','Keep going — your positive streak helps.'); } }
+
+      // utilities
+      function escapeHtml(s){ return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;'); }
+      function showToast(txt){ const el=document.createElement('div'); el.className='bp-toast'; el.innerText=txt; document.body.appendChild(el); setTimeout(()=>{ el.style.transition='all .3s'; el.style.opacity=0; el.style.transform='translateY(8px)'; setTimeout(()=>el.remove(),300); },1600); }
+
+      // quick nav buttons
+      const dash=document.getElementById('dashboard'); if(dash){ const gotoJournalBtn=dash.querySelector('#gotoJournal'); if(gotoJournalBtn) gotoJournalBtn.addEventListener('click', ()=>{ document.querySelector('[data-page="journal"]').click(); }); const gotoBreathBtn=dash.querySelector('#gotoBreath'); if(gotoBreathBtn) gotoBreathBtn.addEventListener('click', ()=>{ document.querySelector('[data-page="breathing"]').click(); }); const gotoAnalyticsBtn=dash.querySelector('#gotoAnalytics'); if(gotoAnalyticsBtn) gotoAnalyticsBtn.addEventListener('click', ()=>{ document.querySelector('[data-page="analytics"]').click(); }); }
+
+      // export/import
+      document.getElementById('exportBtn').addEventListener('click', ()=>{ const data={moods:load(KEY_MOODS,[]),journal:load(KEY_JOURNAL,[]),badges:load(KEY_BADGES,[]),streak:load(KEY_STREAK,{}),pos:load(KEY_POS,0),username:load(KEY_USERNAME,''),avatar:load(KEY_AVATAR,'')}; const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='brightpath-backup-'+Date.now()+'.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); showToast('Export started'); });
+      document.getElementById('importFile').addEventListener('change', (e)=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const obj=JSON.parse(r.result); if(obj.moods) save(KEY_MOODS,obj.moods); if(obj.journal) save(KEY_JOURNAL,obj.journal); if(obj.badges) save(KEY_BADGES,obj.badges); if(obj.streak) save(KEY_STREAK,obj.streak); if(obj.pos!==undefined) save(KEY_POS,obj.pos); if(obj.username) save(KEY_USERNAME,obj.username); if(obj.avatar) save(KEY_AVATAR,obj.avatar); renderJournal(); renderAchievements(); renderDashboard(); drawAnalytics(); showToast('Import complete'); }catch(err){ infoModal('Import failed','Invalid file'); } }; r.readAsText(f); });
+
+      // avatar upload
+      const avatarFile = document.getElementById('avatarFile'); const avatarPreview=document.getElementById('avatarPreview'); if(avatarPreview){ const av = load(KEY_AVATAR,''); if(av) avatarPreview.style.backgroundImage = 'url('+av+')'; }
+      document.getElementById('saveAvatar').addEventListener('click', ()=>{ const f = avatarFile.files[0]; if(!f) return infoModal('No file','Pick an image file first'); const r=new FileReader(); r.onload=()=>{ save(KEY_AVATAR,r.result); if(avatarPreview) avatarPreview.style.backgroundImage='url('+r.result+')'; showToast('Avatar saved'); }; r.readAsDataURL(f); });
+
+      // voice controls
+      const voiceSelect=document.getElementById('voiceSelect'); const testVoiceBtn=document.getElementById('testVoice'); const saveNameBtn=document.getElementById('saveName'); const nameInput=document.getElementById('userNameInput'); const settings = load(KEY_SETTINGS,{});
+      // populate voices
+      setTimeout(refreshVoices,500);
+      testVoiceBtn.addEventListener('click', ()=>{ const v = (nameInput.value||'friend').trim(); const idx = Number(voiceSelect.value)||0; speak(`Hello ${v}, welcome to BrightPath`,{voiceIndex:idx}); });
+      saveNameBtn.addEventListener('click', ()=>{ const v=(nameInput.value||'').trim(); save(KEY_USERNAME,v); document.getElementById('welcomeSmall').innerText = v?('Welcome, '+v):'Local & private'; showToast('Name saved'); speak('Nice to meet you, '+(v||'friend')); });
+      // load saved name
+      const savedName=load(KEY_USERNAME,''); if(nameInput) nameInput.value = savedName; if(savedName) document.getElementById('welcomeSmall').innerText = 'Welcome, '+savedName;
+
+      // background sound toggle
+      const bgToggle = document.getElementById('backgroundSoundToggle'); const bgSelect=document.getElementById('bgSoundSelect'); if(bgToggle){ bgToggle.addEventListener('change', ()=>{ const on=bgToggle.checked; const choice=bgSelect.value; if(on && choice!=='none'){ bgAudio.src = bgMap[choice]||''; bgAudio.play().catch(()=>{}); } else { bgAudio.pause(); bgAudio.currentTime=0; } }); }
+      if(bgSelect){ bgSelect.addEventListener('change', ()=>{ if(bgToggle && bgToggle.checked){ const c=bgSelect.value; if(c==='none'){ bgAudio.pause(); bgAudio.currentTime=0; } else { bgAudio.src = bgMap[c]||''; bgAudio.play().catch(()=>{}); } } }); }
+
+      // meditation voice mode toggle wiring
+      const meditationToggle = document.getElementById('meditationToggle'); if(meditationToggle){ meditationToggle.checked = load(KEY_MEDITATION,false); meditationToggle.addEventListener('change', (e)=>{ save(KEY_MEDITATION, e.target.checked); showToast('Meditation voice mode updated'); }); }
+
+      // voice-guided breathing checkbox wiring
+      const voiceGuideChk = document.getElementById('voiceGuide'); if(voiceGuideChk){ const s = load(KEY_SETTINGS,{}); voiceGuideChk.checked = !!s.voiceGuide; voiceGuideChk.addEventListener('change', (e)=>{ const st = load(KEY_SETTINGS,{}); st.voiceGuide = !!e.target.checked; save(KEY_SETTINGS,st); showToast('Voice-guided breathing preference saved'); }); }
+
+      // settings toggles
+      const darkToggle=document.getElementById('darkToggle'); const voiceAssistantToggle=document.getElementById('voiceAssistantToggle'); const voiceOnSave=document.getElementById('voiceOnSave'); if(darkToggle){ const t = localStorage.getItem(KEY_THEME)||'light'; document.body.setAttribute('data-theme',t); darkToggle.checked = t==='dark'; darkToggle.addEventListener('change', ()=>{ const mode = darkToggle.checked?'dark':'light'; document.body.setAttribute('data-theme',mode); localStorage.setItem(KEY_THEME,mode); }); }
+      if(voiceAssistantToggle){ voiceAssistantToggle.checked = settings.voiceAssistant||false; voiceAssistantToggle.addEventListener('change', ()=>{ settings.voiceAssistant = voiceAssistantToggle.checked; save(KEY_SETTINGS,settings); }); }
+      if(voiceOnSave){ voiceOnSave.checked = settings.voiceOnSave||false; voiceOnSave.addEventListener('change', ()=>{ settings.voiceOnSave = voiceOnSave.checked; save(KEY_SETTINGS,settings); }); }
+
+      // daily reminder
+      const dailyInput = document.getElementById('dailyTime'); const saveDaily=document.getElementById('saveDaily'); const savedDaily = load(KEY_DAILY,null); if(savedDaily && dailyInput) dailyInput.value = savedDaily; if(saveDaily) saveDaily.addEventListener('click', ()=>{ const v=dailyInput.value; if(!v) return showToast('Pick a time'); save(KEY_DAILY,v); showToast('Daily reminder saved'); });
+      function checkDailyReminder(){ const v = load(KEY_DAILY,null); if(!v) return; const moods = load(KEY_MOODS,[]); const last = moods.length?moods[moods.length-1].ts:0; const now = Date.now(); const [hh,mm] = v.split(':').map(Number); const todayCheck = new Date(); todayCheck.setHours(hh,mm,0,0); if(now>todayCheck.getTime() && (!last || (now - last) > 24*3600*1000)) { infoModal('Daily Check-In','You haven\'t logged a mood in 24h. Quick check-in?'); if(load(KEY_SETTINGS,{}).voiceAssistant) speak('You have not logged a mood today. Quick check-in?'); } }
+      setTimeout(checkDailyReminder,1500);
+
+      // nav wiring
+      const nav=document.getElementById('nav'); nav.addEventListener('click',(e)=>{ const btn=e.target.closest('button'); if(!btn) return; nav.querySelectorAll('button').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); const t=btn.dataset.page; document.querySelectorAll('.page').forEach(p=>{ if(p.id===t) p.classList.add('active'); else p.classList.remove('active'); }); if(t==='analytics') setTimeout(drawAnalytics,350); });
+
+      // analytics helper
+      const analyticsBtn = document.querySelector('[data-page="analytics"]'); if(analyticsBtn) analyticsBtn.addEventListener('click', ()=>{ setTimeout(drawAnalytics,350); });
+
+      // export import already handled; compute wellness
+      function computeWellness(){ const moods=load(KEY_MOODS,[]); if(moods.length===0) return; const mapVal=m=> (m==='🤩'||m==='😊')?4:(m==='😐')?2:(m==='😔'||m==='😣')?1:0; const last7=moods.slice(-7); const avg=last7.reduce((s,i)=>s+mapVal(i.mood),0)/(last7.length||1); const txt=(avg>=3.5)?'Excellent':(avg>=2.5)?'Good':(avg>=1.5)?'Average':'Low'; if(document.getElementById('wellnessScore')) document.getElementById('wellnessScore').innerText=txt; }
+
+      // initial render
+      renderJournal(); renderAchievements(); renderDashboard(); drawAnalytics();
+
+      // confetti resize
+      window.addEventListener('resize', ()=>{ if(confCanvas){ confCanvas.width=window.innerWidth; confCanvas.height=window.innerHeight; } });
+
+      // self-tests
+      console.group('BrightPath Tests'); try{ console.assert(Array.isArray(load(KEY_MOODS,[])),'moods exists'); console.assert(Array.isArray(load(KEY_BADGES,[])),'badges exists'); console.assert(Array.isArray(load(KEY_JOURNAL,[])),'journal exists'); console.log('Self-tests OK'); }catch(e){ console.error(e); } console.groupEnd();
+
+    });
+  </script>
+</body>
+</html>
