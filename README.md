@@ -112,7 +112,7 @@ Save
 
 Your app will be live at:
 
-https://yourusername.github.io/brightpath-wellness-app/
+
 
 🔒 Privacy
 
