@@ -8,7 +8,6 @@
   <style>
     :root{--p1:#6b21a8;--p2:#c77dff}
     *{box-sizing:border-box}
-
     body{
       margin:0;
       font-family:Inter,system-ui,Segoe UI,Roboto,Arial;
@@ -16,7 +15,6 @@
       color:#102027;
       transition:background 0.3s;
     }
-
     /* Themes */
     body[data-theme="dark"]{
       background:linear-gradient(135deg,#0f172a,#020617);
@@ -38,34 +36,14 @@
       background:linear-gradient(135deg,#2c3e50,#000428,#004e92);
       color:#e5e7eb;
     }
-
     body[data-theme="dark"] .content,
-    body[data-theme="dark"] .card{
-      background:rgba(255,255,255,0.06);
-    }
-    body[data-theme="dark"] .sidebar{
-      background:linear-gradient(180deg,#020617,#0f172a);
-    }
-    body[data-theme="dark"] .stat,
-    body[data-theme="dark"] .entry{
-      background:rgba(255,255,255,0.08);
-    }
-    body[data-theme="sunset"] .content,
-    body[data-theme="sunset"] .card{
-      background:rgba(255,255,255,0.15);
-    }
-    body[data-theme="ocean"] .content,
-    body[data-theme="ocean"] .card{
-      background:rgba(255,255,255,0.12);
-    }
-    body[data-theme="forest"] .content,
-    body[data-theme="forest"] .card{
-      background:rgba(255,255,255,0.18);
-    }
-    body[data-theme="midnight"] .content,
-    body[data-theme="midnight"] .card{
-      background:rgba(255,255,255,0.08);
-    }
+    body[data-theme="dark"] .card{ background:rgba(255,255,255,0.06); }
+    body[data-theme="dark"] .sidebar{ background:linear-gradient(180deg,#020617,#0f172a); }
+    body[data-theme="dark"] .stat, body[data-theme="dark"] .entry{ background:rgba(255,255,255,0.08); }
+    body[data-theme="sunset"] .content, body[data-theme="sunset"] .card{ background:rgba(255,255,255,0.15); }
+    body[data-theme="ocean"] .content, body[data-theme="ocean"] .card{ background:rgba(255,255,255,0.12); }
+    body[data-theme="forest"] .content, body[data-theme="forest"] .card{ background:rgba(255,255,255,0.18); }
+    body[data-theme="midnight"] .content, body[data-theme="midnight"] .card{ background:rgba(255,255,255,0.08); }
 
     .app{max-width:1200px;margin:18px auto;display:flex;gap:18px}
     .sidebar{width:88px;background:linear-gradient(180deg,var(--p1),#7b2fb6);border-radius:12px;padding:12px;color:#fff}
@@ -94,94 +72,21 @@
     .small{font-size:12px;opacity:0.9}
     .controls{display:flex;gap:8px;align-items:center}
     .btn{padding:8px 12px;border-radius:10px;border:none;cursor:pointer}
-    input[type=file]{color:#fff}
-    .avatar-preview{
-      width:64px;
-      height:64px;
-      border-radius:50%;
-      background:#fff;
-      background-size:cover;
-      background-position:center;
-      border:2px solid #fff;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-weight:800;
-      font-size:28px;
-    }
-    .habit-item{
-      background:rgba(255,255,255,0.06);
-      padding:12px;
-      border-radius:10px;
-      margin-top:8px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-    }
+    .avatar-preview{ width:64px;height:64px;border-radius:50%;background:#fff;background-size:cover;background-position:center;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:28px;}
+    .habit-item{ background:rgba(255,255,255,0.06); padding:12px;border-radius:10px;margin-top:8px;display:flex;justify-content:space-between;align-items:center;}
     .habit-days{display:flex;gap:4px;margin-top:6px}
-    .habit-day{
-      width:24px;
-      height:24px;
-      border-radius:50%;
-      background:rgba(255,255,255,0.15);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:10px;
-      cursor:pointer;
-    }
+    .habit-day{ width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;cursor:pointer;}
     .habit-day.done{background:#81f783;color:#000}
-    .meditation-card{
-      background:rgba(255,255,255,0.06);
-      padding:12px;
-      border-radius:10px;
-      margin-top:8px;
-      cursor:pointer;
-      transition:transform 0.2s;
-    }
+    .meditation-card{ background:rgba(255,255,255,0.06); padding:12px;border-radius:10px;margin-top:8px;cursor:pointer;transition:transform 0.2s;}
     .meditation-card:hover{transform:scale(1.02)}
-    .community-post{
-      background:rgba(255,255,255,0.06);
-      padding:12px;
-      border-radius:10px;
-      margin-top:8px;
-    }
-    .points-badge{
-      background:linear-gradient(135deg,#ffd700,#ffed4e);
-      color:#000;
-      padding:4px 10px;
-      border-radius:999px;
-      font-weight:700;
-      font-size:12px;
-    }
-    .theme-selector{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:8px;
-      margin-top:8px;
-    }
-    .theme-option{
-      padding:20px;
-      border-radius:10px;
-      cursor:pointer;
-      text-align:center;
-      border:2px solid transparent;
-      transition:all 0.2s;
-    }
+    .community-post{ background:rgba(255,255,255,0.06); padding:12px;border-radius:10px;margin-top:8px;}
+    .points-badge{ background:linear-gradient(135deg,#ffd700,#ffed4e);color:#000;padding:4px 10px;border-radius:999px;font-weight:700;font-size:12px;}
+    .theme-selector{ display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px;}
+    .theme-option{ padding:20px;border-radius:10px;cursor:pointer;text-align:center;border:2px solid transparent;transition:all 0.2s;}
     .theme-option:hover{transform:scale(1.05)}
     .theme-option.active{border-color:#fff;box-shadow:0 0 20px rgba(255,255,255,0.3)}
-    .level-progress{
-      background:rgba(255,255,255,0.1);
-      height:8px;
-      border-radius:999px;
-      overflow:hidden;
-      margin-top:6px;
-    }
-    .level-bar{
-      background:linear-gradient(90deg,#81f783,#9b59b6);
-      height:100%;
-      transition:width 0.5s;
-    }
+    .level-progress{ background:rgba(255,255,255,0.1);height:8px;border-radius:999px;overflow:hidden;margin-top:6px;}
+    .level-bar{ background:linear-gradient(90deg,#81f783,#9b59b6);height:100%;transition:width 0.5s;}
   </style>
 </head>
 <body>
@@ -225,20 +130,17 @@
                   <div style="display:flex;justify-content:space-between;align-items:center">
                     <strong>Quick Mood</strong><div class="small">Tap to save</div>
                   </div>
-                  <div id="quickEmoji" style="font-size:28px;margin-top:8px;display:flex;gap:10px;flex-wrap:wrap">
-                    <!-- more emojis added -->
+                  <div id="quickEmoji" style="font-size:28px;margin-top:8px;display:flex;gap:10px">
                     <span class="qm" data-emo="🤩">🤩</span>
                     <span class="qm" data-emo="😊">😊</span>
                     <span class="qm" data-emo="🙂">🙂</span>
                     <span class="qm" data-emo="😐">😐</span>
-                    <span class="qm" data-emo="😕">😕</span>
                     <span class="qm" data-emo="😔">😔</span>
                     <span class="qm" data-emo="😣">😣</span>
-                    <span class="qm" data-emo="😢">😢</span>
                     <span class="qm" data-emo="😡">😡</span>
                     <span class="qm" data-emo="😴">😴</span>
+                    <span class="qm" data-emo="😇">😇</span>
                     <span class="qm" data-emo="🤯">🤯</span>
-                    <span class="qm" data-emo="🫠">🫠</span>
                   </div>
                 </div>
 
@@ -360,7 +262,7 @@
             <h3>Community Support</h3>
             <div class="card" style="margin-bottom:12px">
               <strong>Daily Quote</strong>
-              <div id="dailyQuote" style="margin-top:8px;font-style:italic">Loading...</div>
+              <div id="dailyQuote" style="margin-top:8px;font-style:italic"></div>
             </div>
             <div class="card">
               <strong>Share Your Win (Anonymous)</strong>
@@ -469,8 +371,6 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', ()=>{
-
-      // Keys
       const KEY_MOODS='bp_moods_v3',
             KEY_BADGES='bp_badges_v3',
             KEY_JOURNAL='bp_journal_v1',
@@ -492,7 +392,6 @@
       function load(k,f){try{const v=localStorage.getItem(k);return v?JSON.parse(v):f}catch(e){return f}}
       function save(k,v){localStorage.setItem(k,JSON.stringify(v));}
 
-      // modal helpers
       const modalOverlay = document.getElementById('modalOverlay');
       const modalTitle   = document.getElementById('modalTitle');
       const modalBody    = document.getElementById('modalBody');
@@ -524,7 +423,6 @@
         document.getElementById('mOk').addEventListener('click', closeModal);
       }
 
-      // badge defs
       const badgeDefs = {
         'streak_3':{emoji:'🥉',title:'Bronze Streak'},
         'streak_7':{emoji:'🥈',title:'Silver Streak'},
@@ -537,13 +435,10 @@
         'total_100':{emoji:'🏅',title:'Century Club'},
         'resilience_5neg':{emoji:'💪',title:'Resilient'},
         'meditation_5':{emoji:'🧘',title:'Meditation Master'},
-        'habit_7':{emoji:'✨',title:'Habit Builder'},
-        'community_5':{emoji:'💬',title:'Community Star'},
-        'early_bird':{emoji:'🌅',title:'Early Bird'},
-        'night_owl':{emoji:'🦉',title:'Night Owl'}
+        'meditation_1':{emoji:'✨',title:'First Meditation'}
       };
 
-      // Points & leveling
+      // Points / Level system
       function addPoints(amount, reason){
         let pts = load(KEY_POINTS, 0) || 0;
         pts += amount;
@@ -552,23 +447,28 @@
         showToast(`+${amount} points: ${reason}`);
         checkLevelUp();
       }
+
       function updatePointsDisplay(){
         const pts = load(KEY_POINTS, 0) || 0;
         const level = load(KEY_LEVEL, 1) || 1;
         const ptsEl = document.getElementById('userPoints');
         const lvlEl = document.getElementById('userLevel');
         const barEl = document.getElementById('levelBar');
+        
         if(ptsEl) ptsEl.innerText = pts + ' pts';
         if(lvlEl) lvlEl.innerText = 'Level ' + level;
+        
         const ptsForNext = level * 100;
         const ptsInLevel = pts % ptsForNext;
         const progress = (ptsInLevel / ptsForNext) * 100;
         if(barEl) barEl.style.width = progress + '%';
       }
+
       function checkLevelUp(){
         const pts = load(KEY_POINTS, 0) || 0;
         let level = load(KEY_LEVEL, 1) || 1;
         const ptsForNext = level * 100;
+        
         if(pts >= ptsForNext){
           level++;
           save(KEY_LEVEL, level);
@@ -580,36 +480,36 @@
       }
 
       // Voice & speech
-      const synth = window.speechSynthesis;
+      const synth = window.speechSynthesis || null;
       let voices = [];
       function refreshVoices(){
-        try{
-          voices = synth.getVoices() || [];
-          const sel = document.getElementById('voiceSelect');
-          if(!sel) return;
-          sel.innerHTML = '';
-          voices.forEach((v,i)=>{
-            const opt = document.createElement('option');
-            opt.value = i;
-            opt.innerText = v.name + (v.lang?(' ('+v.lang+')'):'');
-            sel.appendChild(opt);
-          });
-        }catch(e){}
+        if(!synth) return;
+        voices = synth.getVoices();
+        const sel=document.getElementById('voiceSelect');
+        if(!sel) return;
+        sel.innerHTML='';
+        voices.forEach((v,i)=>{
+          const opt=document.createElement('option');
+          opt.value=i;
+          opt.innerText = v.name + (v.lang?(' ('+v.lang+')'):'');
+          sel.appendChild(opt);
+        });
       }
       if('speechSynthesis' in window){
         window.speechSynthesis.onvoiceschanged = refreshVoices;
-        setTimeout(refreshVoices, 200);
+        setTimeout(refreshVoices,500);
       }
-      function speak(text, opts={}){
+
+      function speak(text,opts={}){
         try{
           if(!('speechSynthesis' in window)) return;
           const u = new SpeechSynthesisUtterance(text);
           if(opts.voiceIndex!==undefined && voices[opts.voiceIndex]) u.voice = voices[opts.voiceIndex];
-          if(opts.rate) u.rate = opts.rate;
           if(opts.pitch) u.pitch = opts.pitch;
+          if(opts.rate)  u.rate  = opts.rate;
           u.volume = opts.volume||1;
           synth.speak(u);
-        }catch(e){}
+        }catch(e){console.warn('speak err',e)}
       }
 
       // Utils
@@ -619,407 +519,472 @@
         el.className='bp-toast';
         el.innerText=txt;
         document.body.appendChild(el);
-        setTimeout(()=>{ el.style.transition='all .3s'; el.style.opacity=0; el.style.transform='translateY(8px)'; setTimeout(()=>el.remove(),300); },1600);
+        setTimeout(()=>{
+          el.style.transition='all .3s';
+          el.style.opacity=0;
+          el.style.transform='translateY(8px)';
+          setTimeout(()=>el.remove(),300);
+        },1600);
       }
 
-      // Charts
-      let lineChart=null, pieChart=null;
-      function initCharts(){
-        try{
-          const cLine = document.getElementById('lineChart');
-          const cPie = document.getElementById('pieChart');
-          if(!cLine || !cPie) return;
-          const ctx = cLine.getContext('2d');
-          const pctx = cPie.getContext('2d');
-          if(lineChart) lineChart.destroy();
-          if(pieChart) pieChart.destroy();
-          lineChart = new Chart(ctx, {
-            type:'line',
-            data:{labels:[],datasets:[{label:'Mood',data:[],tension:0.4,backgroundColor:'rgba(199,125,255,0.12)',borderColor:'#c77dff',pointRadius:4}]},
-            options:{scales:{y:{min:0,max:4,ticks:{stepSize:1}}},plugins:{legend:{display:false}}}
+      // Confetti
+      const confCanvas = document.getElementById('confettiCanvas');
+      if(confCanvas){ confCanvas.width=window.innerWidth; confCanvas.height=window.innerHeight; }
+      let confTimer=null;
+      function showConfettiOnce(){
+        if(!confCanvas) return;
+        if(confTimer) return;
+        const ctx=confCanvas.getContext('2d');
+        let parts=[];
+        for(let i=0;i<60;i++){
+          parts.push({x:confCanvas.width/2,y:confCanvas.height/2,vx:(Math.random()-0.5)*8,vy:(Math.random()-0.8)*8,size:4+Math.random()*6,color:['#ff6b6b','#ffd93d','#6be4ff','#9b59b6','#81f783'][Math.floor(Math.random()*5)]});
+        }
+        let t=0;
+        confTimer=setInterval(()=>{
+          ctx.clearRect(0,0,confCanvas.width,confCanvas.height);
+          parts.forEach(p=>{
+            p.x+=p.vx; p.y+=p.vy; p.vy+=0.2;
+            ctx.fillStyle=p.color;
+            ctx.fillRect(p.x,p.y,p.size,p.size);
           });
-          pieChart = new Chart(pctx, {
-            type:'doughnut',
-            data:{labels:[],datasets:[{data:[],backgroundColor:['#c77dff','#9b59b6','#6be4ff','#ffb74d','#ff6b6b','#81f783']}]},
-            options:{plugins:{legend:{position:'bottom'}}}
-          });
-        }catch(e){ console.warn('chart init', e); }
-      }
-      function drawAnalytics(){
-        const moods = load(KEY_MOODS,[]) || [];
-        initCharts();
-        if(!lineChart || !pieChart) return;
-        if(moods.length===0){
-          lineChart.data.labels=['No data']; lineChart.data.datasets[0].data=[0]; lineChart.update();
-          pieChart.data.labels=[]; pieChart.data.datasets[0].data=[]; pieChart.update();
-          const wEl = document.getElementById('weeklyText'); if(wEl) wEl.innerText='No data';
-          return;
-        }
-        const mapVal = m => (m==='🤩'||m==='😊'||m==='🙂')?4:(m==='😐')?2:(m==='😔'||m==='😣')?1:0;
-        const last30 = moods.slice(-30);
-        lineChart.data.labels = last30.map(x=>new Date(x.ts).toLocaleDateString());
-        lineChart.data.datasets[0].data = last30.map(x=>mapVal(x.mood));
-        lineChart.update();
-
-        const counts={'🤩':0,'😊':0,'🙂':0,'😐':0,'😔':0,'😣':0,'😢':0,'😡':0,'😴':0,'🤯':0,'🫠':0};
-        moods.forEach(m=>{ if(counts[m.mood]!==undefined) counts[m.mood]++; else counts[m.mood]=(counts[m.mood]||0)+1; });
-        pieChart.data.labels = Object.keys(counts);
-        pieChart.data.datasets[0].data = Object.values(counts);
-        pieChart.update();
-
-        const last7 = moods.slice(-7);
-        const avg = last7.reduce((s,i)=>s+mapVal(i.mood),0)/(last7.length||1);
-        const txt = (avg>=3.5)?'Excellent':(avg>=2.5)?'Good':(avg>=1.5)?'Average':'Low';
-        const wEl = document.getElementById('weeklyText'); if(wEl) wEl.innerText = txt;
-        const ws = document.getElementById('wellnessScore'); if(ws) ws.innerText = txt;
-      }
-
-      // Breathing (already in user's code but ensure safe)
-      let breathTimer=null, breathPhase=0;
-      function startBreathing(){
-        if(breathTimer) return;
-        const seq = [4,7,8];
-        const shortText = ['Breathe in','Hold','Breathe out'];
-        const medText = [
-          'Slowly breathe in... let your lungs fill completely...',
-          'Hold your breath gently... stay relaxed...',
-          'Now slowly breathe out... release all tension from your body...'
-        ];
-        const circle = document.getElementById('breathCircle');
-        const text = document.getElementById('breathText');
-        const settings = load(KEY_SETTINGS,{});
-        const medMode = load(KEY_MEDITATION,false);
-        const voiceGuide = settings.voiceGuide || false;
-        function playPhaseTone(phase){
-          try{
-            const ctx = new (window.AudioContext||window.webkitAudioContext)();
-            const o = ctx.createOscillator(); const g = ctx.createGain();
-            o.connect(g); g.connect(ctx.destination);
-            if(phase===0){ o.frequency.value = 520; g.gain.value = 0.02; }
-            else if(phase===1){ o.frequency.value = 440; g.gain.value = 0.01; }
-            else { o.frequency.value = 320; g.gain.value = 0.02; }
-            o.start();
-            setTimeout(()=>{ o.stop(); ctx.close(); },130);
-          }catch(e){}
-        }
-        function step(){
-          const dur = seq[breathPhase]*1000;
-          if(circle) circle.style.transition='transform '+dur+'ms ease-in-out';
-          if(breathPhase===0 && circle) circle.style.transform='scale(1.24)';
-          else if(breathPhase===1 && circle) circle.style.transform='scale(1.12)';
-          else if(circle) circle.style.transform='scale(0.86)';
-          if(text) text.innerText = medMode ? medText[breathPhase] : shortText[breathPhase];
-          playPhaseTone(breathPhase);
-          if(voiceGuide && ('speechSynthesis' in window)){
-            try{ speechSynthesis.cancel(); }catch(e){}
-            const toSpeak = medMode ? medText[breathPhase] : shortText[breathPhase];
-            setTimeout(()=>{ speak(toSpeak); },80);
+          t++;
+          if(t>80){
+            clearInterval(confTimer);
+            confTimer=null;
+            ctx.clearRect(0,0,confCanvas.width,confCanvas.height);
           }
-          breathPhase = (breathPhase+1)%3;
-          breathTimer = setTimeout(step, dur);
-        }
-        breathPhase = 0; step();
-      }
-      function stopBreathing(){ if(breathTimer) clearTimeout(breathTimer); breathTimer=null; const circle=document.getElementById('breathCircle'); if(circle) circle.style.transform='scale(1)'; const text=document.getElementById('breathText'); if(text) text.innerText='Press Start'; }
-      document.getElementById('startBreath').addEventListener('click', startBreathing);
-      document.getElementById('stopBreath').addEventListener('click', stopBreathing);
-
-      // Quick mood selection (more robust)
-      const quickEmoji = document.getElementById('quickEmoji');
-      if(quickEmoji) quickEmoji.addEventListener('click', (e)=>{
-        const t = e.target;
-        if(!t || !t.classList || !t.classList.contains('qm')) return;
-        const mood = t.getAttribute('data-emo') || t.innerText.trim();
-        if(!mood) return;
-        // select
-        document.querySelectorAll('.qm').forEach(el=>el.classList.remove('selected'));
-        t.classList.add('selected');
-        save(KEY_LAST, mood);
-        // subtle feedback
-        try{ const ctx = new (window.AudioContext||window.webkitAudioContext)(); const o = ctx.createOscillator(); const g = ctx.createGain(); o.connect(g); g.connect(ctx.destination); o.frequency.value = 880; g.gain.value = 0.02; o.start(); setTimeout(()=>{ o.stop(); ctx.close(); },60); }catch(e){}
-        if(navigator.vibrate) navigator.vibrate(20);
-        const settings = load(KEY_SETTINGS,{});
-        if(settings.voiceOnSave) speak('Mood saved');
-        saveMood(mood);
-      });
-
-      // Save mood & unlock badges
-      function saveMood(mood){
-        const arr = load(KEY_MOODS,[]) || [];
-        arr.push({mood, ts: Date.now()});
-        save(KEY_MOODS, arr);
-        renderDashboard();
-        checkAndUnlockBadges({mood, ts: Date.now()});
-        const settings = load(KEY_SETTINGS,{});
-        if(settings.voiceAssistant) aiResponse({mood, ts: Date.now()});
-        addPoints(5, 'Logged mood');
-        showToast('Mood saved');
+        },16);
       }
 
-      // journal
-      function renderJournal(){
-        const wrap = document.getElementById('entriesWrap');
-        if(!wrap) return;
-        wrap.innerHTML = '';
-        const arr = load(KEY_JOURNAL,[]) || [];
-        arr.slice().reverse().forEach((en,i)=>{
-          const d = document.createElement('div'); d.className='entry';
-          d.innerHTML = '<div style="font-size:12px;opacity:0.9">'+new Date(en.ts).toLocaleString()+'</div>'
-                       +'<div style="margin-top:6px">'+escapeHtml(en.text)+'</div>'
-                       +'<div style="margin-top:8px;text-align:right"><button class="btn del" data-i="'+(arr.length-1-i)+'">Delete</button></div>';
-          wrap.appendChild(d);
-        });
-        wrap.querySelectorAll('button.del').forEach(b => b.addEventListener('click',(ev)=>{
-          const idx = Number(ev.target.dataset.i);
-          confirmModal('Delete Entry','Delete this journal entry?', ()=>{
-            const a = load(KEY_JOURNAL,[]);
-            a.splice(idx,1); save(KEY_JOURNAL,a); renderJournal();
-          }, ()=>{});
-        }));
-      }
-      document.getElementById('saveEntry').addEventListener('click', ()=>{
-        const el=document.getElementById('journalInput'); const txt = el?el.value.trim():'';
-        if(!txt) return infoModal('Empty','Write something before saving');
-        const arr = load(KEY_JOURNAL,[]);
-        arr.push({text: txt, ts: Date.now()}); save(KEY_JOURNAL, arr);
-        if(el) el.value=''; renderJournal(); addPoints(8,'Journal entry'); showToast('Journal saved');
-      });
-      document.getElementById('clearJournal').addEventListener('click', ()=>{ confirmModal('Clear Journal','Remove all entries?', ()=>{ save(KEY_JOURNAL,[]); renderJournal(); showToast('Journal cleared'); }, ()=>{}); });
-
-      // Habits
-      function renderHabits(){
-        const container = document.getElementById('habitsContainer');
-        if(!container) return;
-        container.innerHTML = '';
-        const habits = load(KEY_HABITS,[]) || [];
-        habits.forEach((h, index)=>{
-          const div = document.createElement('div'); div.className='habit-item';
-          const left = document.createElement('div');
-          left.innerHTML = `<div style="font-weight:700">${escapeHtml(h.name)}</div><div class="habit-days"></div>`;
-          const daysWrap = left.querySelector('.habit-days');
-          // show 7 day toggles (simple)
-          for(let d=0; d<7; d++){
-            const day = document.createElement('div'); day.className='habit-day';
-            if(h.days && h.days[d]) day.classList.add('done');
-            day.innerText = ['S','M','T','W','T','F','S'][d];
-            day.addEventListener('click', ()=>{
-              const habits = load(KEY_HABITS,[]);
-              habits[index].days = habits[index].days || [false, false, false, false, false, false, false];
-              habits[index].days[d] = !habits[index].days[d];
-              save(KEY_HABITS, habits);
-              renderHabits();
-              if(habits[index].days[d]) { addPoints(3,'Completed habit day'); }
-            });
-            daysWrap.appendChild(day);
-          }
-          const right = document.createElement('div');
-          right.innerHTML = `<button class="btn edit" data-i="${index}">Edit</button> <button class="btn del" data-i="${index}">Delete</button>`;
-          div.appendChild(left); div.appendChild(right);
-          container.appendChild(div);
-        });
-        container.querySelectorAll('button.del').forEach(b => b.addEventListener('click',(ev)=>{
-          const idx = Number(ev.target.dataset.i);
-          const arr = load(KEY_HABITS,[]);
-          arr.splice(idx,1); save(KEY_HABITS,arr); renderHabits();
-        }));
-        container.querySelectorAll('button.edit').forEach(b => b.addEventListener('click',(ev)=>{
-          const idx = Number(ev.target.dataset.i);
-          const arr = load(KEY_HABITS,[]);
-          const name = prompt('Edit habit name', arr[idx].name);
-          if(name!==null){ arr[idx].name = name; save(KEY_HABITS, arr); renderHabits(); }
-        }));
-      }
-      document.getElementById('addHabitBtn').addEventListener('click', ()=>{
-        const input = document.getElementById('newHabitInput');
-        const v = input?input.value.trim():'';
-        if(!v) return showToast('Type a habit name');
-        const arr = load(KEY_HABITS,[]);
-        arr.push({name:v, days: [false,false,false,false,false,false,false]});
-        save(KEY_HABITS,arr); input.value=''; renderHabits(); addPoints(10,'New habit added');
-      });
-
-      // Achievements render
+      // Render dashboard & achievements
       function renderAchievements(){
-        const c = document.getElementById('achieveGrid');
+        const c=document.getElementById('achieveGrid');
         if(!c) return;
-        c.innerHTML = '';
-        const arr = load(KEY_BADGES,[]) || [];
+        c.innerHTML='';
+        const arr=load(KEY_BADGES,[]);
         arr.forEach(id=>{
-          const info = badgeDefs[id] || {emoji:'🏅', title:id};
-          const d = document.createElement('div');
-          d.style.display='flex'; d.style.flexDirection='column'; d.style.alignItems='center'; d.style.width='100px';
-          d.innerHTML = '<div style="font-size:28px">'+info.emoji+'</div><div style="margin-top:6px;font-weight:700">'+info.title+'</div>';
+          const info=badgeDefs[id]||{emoji:'🏅',title:id};
+          const d=document.createElement('div');
+          d.style.display='flex';
+          d.style.flexDirection='column';
+          d.style.alignItems='center';
+          d.style.width='100px';
+          d.innerHTML='<div style="font-size:28px">'+info.emoji+'</div><div style="margin-top:6px;font-weight:700">'+info.title+'</div>';
           c.appendChild(d);
         });
       }
 
-      // confetti
-      const confCanvas = document.getElementById('confettiCanvas');
-      if(confCanvas){ confCanvas.width = window.innerWidth; confCanvas.height = window.innerHeight; }
-      let confTimer = null;
-      function showConfettiOnce(){
-        if(!confCanvas) return; if(confTimer) return;
-        const ctx = confCanvas.getContext('2d'); let parts=[];
-        for(let i=0;i<60;i++) parts.push({x:confCanvas.width/2,y:confCanvas.height/2,vx:(Math.random()-0.5)*8,vy:(Math.random()-0.8)*8,size:4+Math.random()*6,color:['#ff6b6b','#ffd93d','#6be4ff','#9b59b6','#81f783'][Math.floor(Math.random()*5)]});
-        let t=0;
-        confTimer = setInterval(()=>{ ctx.clearRect(0,0,confCanvas.width,confCanvas.height); parts.forEach(p=>{ p.x+=p.vx; p.y+=p.vy; p.vy+=0.2; ctx.fillStyle=p.color; ctx.fillRect(p.x,p.y,p.size,p.size); }); t++; if(t>80){ clearInterval(confTimer); confTimer=null; ctx.clearRect(0,0,confCanvas.width,confCanvas.height); } },16);
+      function renderDashboard(){
+        const moods=load(KEY_MOODS,[]);
+        const badges=load(KEY_BADGES,[]);
+        const dash=document.getElementById('dashBadges');
+        if(dash) dash.innerHTML='';
+        (badges||[]).forEach(id=>{
+          const info=badgeDefs[id]||{emoji:'🏅',title:id};
+          const el=document.createElement('div');
+          el.style.background='rgba(255,255,255,0.08)';
+          el.style.padding='6px 8px';
+          el.style.borderRadius='999px';
+          el.innerText=info.emoji+' '+info.title;
+          dash.appendChild(el);
+        });
+        const today=document.getElementById('todayMoodLarge');
+        if(today) today.innerText = moods.length?moods[moods.length-1].mood:'—';
+        const sc=document.getElementById('streakCount');
+        if(sc) sc.innerText = (load(KEY_STREAK,{streak:0}).streak||0);
+        const ps=document.getElementById('posStreak');
+        if(ps) ps.innerText = load(KEY_POS,0)||0;
+        updatePointsDisplay();
+        computeWellness();
       }
 
-      // AI supportive messages
-      function aiResponse(entry){
-        const m = entry.mood;
+      // Quick mood setup (with more emojis)
+      const quickEmoji = document.getElementById('quickEmoji');
+      const lastSelected = load(KEY_LAST,null);
+      if(lastSelected) setTimeout(()=>{ setSelectedByEmoji(lastSelected); },200);
+
+      function setSelectedByEmoji(emo){
+        document.querySelectorAll('.qm').forEach(el=>el.classList.remove('selected'));
+        const el=document.querySelector('.qm[data-emo="'+emo+'"]');
+        if(el) el.classList.add('selected');
+      }
+
+      function playClickTone(){
+        try{
+          const ctx = new (window.AudioContext||window.webkitAudioContext)();
+          const o = ctx.createOscillator();
+          const g = ctx.createGain();
+          o.type='sine';
+          o.frequency.value = 880;
+          g.gain.value = 0.02;
+          o.connect(g); g.connect(ctx.destination);
+          o.start();
+          setTimeout(()=>{ o.stop(); ctx.close(); },80);
+        }catch(e){}
+      }
+      function doVibrate(){ if(navigator.vibrate) navigator.vibrate(30); }
+
+      if(quickEmoji){
+        quickEmoji.addEventListener('click', (e)=>{
+          const t=e.target;
+          if(!t || !t.classList || !t.classList.contains('qm')) return;
+          const mood = t.getAttribute('data-emo')||t.innerText.trim();
+          if(!mood) return;
+          setSelectedByEmoji(mood);
+          save(KEY_LAST,mood);
+          playClickTone();
+          doVibrate();
+          const settings = load(KEY_SETTINGS,{});
+          if(settings.voiceOnSave) speak('Mood saved');
+          saveMood(mood);
+        });
+      }
+
+      function saveMood(mood){
+        const arr = load(KEY_MOODS,[]);
+        const entry = {mood,ts:Date.now()};
+        arr.push(entry);
+        save(KEY_MOODS,arr);
+        renderDashboard();
+        checkAndUnlockBadges(entry);
         const settings = load(KEY_SETTINGS,{});
-        if(m==='😔'||m==='😣'||m==='😢'){
+        if(settings.voiceAssistant) aiResponse(entry);
+        showToast('Mood saved');
+        addPoints(2, 'Mood check-in');
+      }
+
+      // Journal
+      function renderJournal(){
+        const wrap=document.getElementById('entriesWrap');
+        if(!wrap) return;
+        wrap.innerHTML='';
+        const arr=load(KEY_JOURNAL,[]);
+        arr.slice().reverse().forEach((en,i)=>{
+          const d=document.createElement('div');
+          d.className='entry';
+          d.innerHTML =
+            '<div style="font-size:12px;opacity:0.9">'+new Date(en.ts).toLocaleString()+'</div>'+
+            '<div style="margin-top:6px">'+escapeHtml(en.text)+'</div>'+
+            '<div style="margin-top:8px;text-align:right"><button class="btn del" data-i="'+(arr.length-1-i)+'">Delete</button></div>';
+          wrap.appendChild(d);
+        });
+        wrap.querySelectorAll('button.del').forEach(b=>b.addEventListener('click',(ev)=>{
+          const idx=Number(ev.target.dataset.i);
+          confirmModal('Delete Entry','Delete this journal entry?', ()=>{
+            const a=load(KEY_JOURNAL,[]);
+            a.splice(idx,1);
+            save(KEY_JOURNAL,a);
+            renderJournal();
+          }, ()=>{});
+        }));
+      }
+
+      document.getElementById('saveEntry').addEventListener('click', ()=>{
+        const el=document.getElementById('journalInput');
+        const txt=el?el.value.trim():'';
+        if(!txt) return infoModal('Empty','Write something before saving');
+        const arr=load(KEY_JOURNAL,[]);
+        arr.push({text:txt,ts:Date.now()});
+        save(KEY_JOURNAL,arr);
+        if(el) el.value='';
+        renderJournal();
+        showToast('Journal saved');
+        addPoints(5,'Journal entry');
+      });
+
+      document.getElementById('clearJournal').addEventListener('click', ()=>{
+        confirmModal('Clear Journal','Remove all entries?', ()=>{
+          save(KEY_JOURNAL,[]);
+          renderJournal();
+          showToast('Journal cleared');
+        }, ()=>{});
+      });
+
+      // Charts (Chart.js)
+      let lineChart=null, pieChart=null;
+      function initCharts(){
+        try{
+          const ctx=document.getElementById('lineChart').getContext('2d');
+          const pctx=document.getElementById('pieChart').getContext('2d');
+          if(lineChart) lineChart.destroy();
+          if(pieChart)  pieChart.destroy();
+          lineChart = new Chart(ctx,{
+            type:'line',
+            data:{labels:[],datasets:[{label:'Mood',data:[],tension:0.4,backgroundColor:'rgba(199,125,255,0.12)',borderColor:'#c77dff',pointRadius:4}]},
+            options:{scales:{y:{min:0,max:4,ticks:{stepSize:1}}},plugins:{legend:{display:false}}}
+          });
+          pieChart = new Chart(pctx,{
+            type:'doughnut',
+            data:{labels:[],datasets:[{data:[],backgroundColor:['#c77dff','#9b59b6','#6be4ff','#ffb74d','#ff6b6b','#81f783']}]},
+            options:{plugins:{legend:{position:'bottom'}}}
+          });
+        }catch(e){console.warn('Chart init',e);}
+      }
+
+      function drawAnalytics(){
+        const moods=load(KEY_MOODS,[]);
+        initCharts();
+        if(!lineChart||!pieChart) return;
+        if(moods.length===0){
+          lineChart.data.labels=['No data'];
+          lineChart.data.datasets[0].data=[0];
+          lineChart.update();
+          pieChart.data.labels=[];
+          pieChart.data.datasets[0].data=[];
+          pieChart.update();
+          const wEl=document.getElementById('weeklyText');
+          if(wEl) wEl.innerText='No data';
+          return;
+        }
+        const mapVal=m=> (m==='🤩'||m==='😊'||m==='🙂'||m==='😇')?4:(m==='😐')?2:(m==='😔'||m==='😣')?1:0;
+        const last30=moods.slice(-30);
+        lineChart.data.labels = last30.map(x=>new Date(x.ts).toLocaleDateString());
+        lineChart.data.datasets[0].data = last30.map(x=>mapVal(x.mood));
+        lineChart.update();
+
+        const counts={'🤩':0,'😊':0,'🙂':0,'😐':0,'😔':0,'😣':0,'😡':0,'😴':0,'😇':0,'🤯':0};
+        moods.forEach(m=>{ if(counts[m.mood]!==undefined) counts[m.mood]++; });
+        pieChart.data.labels = Object.keys(counts);
+        pieChart.data.datasets[0].data = Object.values(counts);
+        pieChart.update();
+
+        const last7=moods.slice(-7);
+        const avg=last7.reduce((s,i)=>s+mapVal(i.mood),0)/(last7.length||1);
+        const txt=(avg>=3.5)?'Excellent':(avg>=2.5)?'Good':(avg>=1.5)?'Average':'Low';
+        const wEl=document.getElementById('weeklyText');
+        const wsEl=document.getElementById('wellnessScore');
+        if(wEl) wEl.innerText=txt;
+        if(wsEl) wsEl.innerText=txt;
+      }
+
+      // Breathing code
+      let breathTimer = null; let breathPhase = 0;
+      function startBreathing(){ if(breathTimer) return;
+        const seq=[4,7,8]; const shortText=['Breathe in','Hold','Breathe out'];
+        const medText=[ 'Slowly breathe in... let your lungs fill completely...', 'Hold your breath gently... stay relaxed...', 'Now slowly breathe out... release all tension from your body...' ];
+        const circle=document.getElementById('breathCircle'); const text=document.getElementById('breathText'); const settings = load(KEY_SETTINGS,{}); const medMode = load(KEY_MEDITATION,false); const voiceGuide = settings.voiceGuide || false;
+
+        function playPhaseTone(phase){ try{ const ctx = new (window.AudioContext||window.webkitAudioContext)(); const o = ctx.createOscillator(); const g = ctx.createGain(); o.connect(g); g.connect(ctx.destination); if(phase===0){ o.frequency.value = 520; g.gain.value = 0.02; } else if(phase===1){ o.frequency.value = 440; g.gain.value = 0.01; } else { o.frequency.value = 320; g.gain.value = 0.02; } o.start(); setTimeout(()=>{ o.stop(); ctx.close(); },130); }catch(e){} }
+
+        function step(){ const dur = seq[breathPhase]*1000; if(circle) circle.style.transition='transform '+dur+'ms ease-in-out'; if(breathPhase===0 && circle) circle.style.transform='scale(1.24)'; else if(breathPhase===1 && circle) circle.style.transform='scale(1.12)'; else if(circle) circle.style.transform='scale(0.86)'; if(text) text.innerText = medMode ? medText[breathPhase] : shortText[breathPhase]; playPhaseTone(breathPhase);
+          if(voiceGuide && ('speechSynthesis' in window)){ try{ speechSynthesis.cancel(); }catch(e){} const toSpeak = medMode ? medText[breathPhase] : shortText[breathPhase]; setTimeout(()=>{ speak(toSpeak); },80); }
+          breathPhase = (breathPhase+1)%3; breathTimer = setTimeout(step, dur); }
+        breathPhase = 0; step();
+      }
+      function stopBreathing(){ if(breathTimer) clearTimeout(breathTimer); breathTimer=null; const circle=document.getElementById('breathCircle'); const text=document.getElementById('breathText'); if(circle) circle.style.transform='scale(1)'; if(text) text.innerText='Press Start'; }
+      document.getElementById('startBreath').addEventListener('click', startBreathing);
+      document.getElementById('stopBreath').addEventListener('click', stopBreathing);
+
+      // Badges & streaks
+      function dateKey(ts){ const d=new Date(ts); return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
+      function checkAndUnlockBadges(newEntry){
+        const streakData=load(KEY_STREAK,{lastDate:null,streak:0});
+        const lastKey=streakData.lastDate;
+        const todayKey=dateKey(newEntry.ts);
+        if(!lastKey){ streakData.lastDate=todayKey; streakData.streak=1; }else{
+          const lp=lastKey.split('-');
+          const lastDate=new Date(Number(lp[0]),Number(lp[1])-1,Number(lp[2]));
+          const tDate=new Date(new Date(newEntry.ts).getFullYear(),new Date(newEntry.ts).getMonth(),new Date(newEntry.ts).getDate());
+          const diff=Math.round((tDate-lastDate)/(24*3600*1000));
+          if(diff===1){ streakData.streak+=1; streakData.lastDate=todayKey; } else if(diff>1){ streakData.streak=1; streakData.lastDate=todayKey; }
+        }
+        save(KEY_STREAK,streakData);
+        let pos=load(KEY_POS,0);
+        if(newEntry.mood==='😊'||newEntry.mood==='🤩'||newEntry.mood==='🙂'||newEntry.mood==='😇') pos+=1; else pos=0;
+        save(KEY_POS,pos);
+        const moods=load(KEY_MOODS,[]); const total=moods.length;
+        const badges=load(KEY_BADGES,[]);
+        const addBadge = id=>{ if(!badges.includes(id)){ badges.push(id); save(KEY_BADGES,badges); renderAchievements(); showConfettiOnce(); successModal('Achievement','You unlocked: '+(badgeDefs[id]?badgeDefs[id].emoji+' '+badgeDefs[id].title:id)); } };
+        if(streakData.streak>=3)  addBadge('streak_3');
+        if(streakData.streak>=7)  addBadge('streak_7');
+        if(streakData.streak>=14) addBadge('streak_14');
+        if(streakData.streak>=30) addBadge('streak_30');
+        if(pos>=5)                addBadge('positive_5');
+        if(total>=10)             addBadge('total_10');
+        if(total>=25)             addBadge('total_25');
+        if(total>=50)             addBadge('total_50');
+        if(total>=100)            addBadge('total_100');
+        const negCount = moods.slice().reverse().slice(0,10).filter(x=>x.mood==='😔'||x.mood==='😣').length;
+        if(negCount>=5)           addBadge('resilience_5neg');
+        renderDashboard();
+      }
+
+      // AI response
+      function aiResponse(entry){
+        const m=entry.mood;
+        const settings = load(KEY_SETTINGS,{});
+        if(m==='😔'||m==='😣'){
           if(settings.voiceAssistant) speak("I'm here for you. Try a 2-minute breathing exercise or write one small thing you're grateful for.");
           infoModal('Support',"I'm here for you. Try a breathing exercise or write one small gratitude.");
-        } else if(m==='😡' || m==='🤯'){
+        }else if(m==='😡'){
           if(settings.voiceAssistant) speak('Take a moment and take 3 slow breaths.');
           infoModal('Take a moment','Try 3 slow breaths.');
-        } else if(m==='😊'||m==='🤩'||m==='🙂'){
+        }else if(m==='😊'||m==='🤩'||m==='🙂'){
           if(settings.voiceAssistant) speak('Nice! Keep going — your positive streak helps.');
           successModal('Nice!','Keep going — your positive streak helps.');
         }
       }
 
-      // Daily quote
-      const QUOTES = [
-        "Small steps every day lead to big changes.",
-        "You are stronger than you think.",
-        "Progress over perfection.",
-        "One kind thought can change your whole day.",
-        "Breathe. You are doing your best.",
-        "Start where you are. Use what you have. Do what you can."
-      ];
-      function setDailyQuote(){
-        const todayKey = (new Date()).toDateString();
-        const stored = load('bp_daily_quote', {date: null, quote: null}) || {date:null, quote:null};
-        let quote = stored.quote;
-        if(stored.date !== todayKey || !quote){
-          quote = QUOTES[Math.floor(Math.random() * QUOTES.length)];
-          save('bp_daily_quote', {date: todayKey, quote});
-        }
-        const el = document.getElementById('dailyQuote');
-        if(el) el.innerText = quote;
-      }
-
-      // Community posts
-      function renderCommunity(){
-        const feed = document.getElementById('communityFeed');
-        if(!feed) return;
-        const posts = load(KEY_COMMUNITY,[]) || [];
-        feed.innerHTML = '';
-        posts.slice().reverse().forEach(p=>{
-          const d = document.createElement('div'); d.className='community-post';
-          d.innerHTML = `<div style="font-size:12px;opacity:0.9">${new Date(p.ts).toLocaleString()}</div><div style="margin-top:6px">${escapeHtml(p.text)}</div>`;
-          feed.appendChild(d);
-        });
-      }
-      document.getElementById('sharePostBtn').addEventListener('click', ()=>{
-        const t = document.getElementById('communityPost').value.trim();
-        if(!t) return showToast('Write something to share');
-        const arr = load(KEY_COMMUNITY,[]);
-        arr.push({text: t, ts: Date.now()});
-        save(KEY_COMMUNITY, arr);
-        document.getElementById('communityPost').value='';
-        renderCommunity(); addPoints(12,'Shared to community');
-        showToast('Shared anonymously');
-        // small chance to award community badge
-        if((load(KEY_COMMUNITY,[]).length % 5) === 0) { const badges = load(KEY_BADGES,[]); if(!badges.includes('community_5')) { badges.push('community_5'); save(KEY_BADGES, badges); renderAchievements(); showConfettiOnce(); } }
-      });
-
-      // Export / Import
+      // Export / import
       document.getElementById('exportBtn').addEventListener('click', ()=>{
-        const data = {
-          moods: load(KEY_MOODS,[]),
-          journal: load(KEY_JOURNAL,[]),
-          badges: load(KEY_BADGES,[]),
-          streak: load(KEY_STREAK,{}),
-          pos: load(KEY_POS,0),
-          username: load(KEY_USERNAME,''),
-          avatar: load(KEY_AVATAR,'😊'),
-          habits: load(KEY_HABITS,[]),
-          points: load(KEY_POINTS,0),
-          level: load(KEY_LEVEL,1),
-          community: load(KEY_COMMUNITY,[])
+        const data={
+          moods:load(KEY_MOODS,[]),
+          journal:load(KEY_JOURNAL,[]),
+          badges:load(KEY_BADGES,[]),
+          streak:load(KEY_STREAK,{}),
+          pos:load(KEY_POS,0),
+          username:load(KEY_USERNAME,''),
+          avatar:load(KEY_AVATAR,'😊'),
+          points:load(KEY_POINTS,0),
+          level:load(KEY_LEVEL,1)
         };
-        const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a'); a.href=url; a.download='brightpath-backup-'+Date.now()+'.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-        showToast('Export started');
+        const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+        const url=URL.createObjectURL(blob);
+        const a=document.createElement('a'); a.href=url; a.download='brightpath-backup-'+Date.now()+'.json';
+        document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); showToast('Export started');
       });
+
       document.getElementById('importFile').addEventListener('change', (e)=>{
-        const f = e.target.files[0]; if(!f) return;
-        const r = new FileReader();
-        r.onload = ()=>{
+        const f=e.target.files[0]; if(!f) return;
+        const r=new FileReader();
+        r.onload=()=>{
           try{
-            const obj = JSON.parse(r.result);
-            if(obj.moods) save(KEY_MOODS, obj.moods);
-            if(obj.journal) save(KEY_JOURNAL, obj.journal);
-            if(obj.badges) save(KEY_BADGES, obj.badges);
-            if(obj.streak) save(KEY_STREAK, obj.streak);
-            if(obj.pos!==undefined) save(KEY_POS, obj.pos);
-            if(obj.username) save(KEY_USERNAME, obj.username);
-            if(obj.avatar) save(KEY_AVATAR, obj.avatar);
-            if(obj.habits) save(KEY_HABITS, obj.habits);
-            if(obj.points) save(KEY_POINTS, obj.points);
-            if(obj.level) save(KEY_LEVEL, obj.level);
-            if(obj.community) save(KEY_COMMUNITY, obj.community);
-            renderJournal(); renderAchievements(); renderDashboard(); renderHabits(); renderCommunity(); drawAnalytics(); updatePointsDisplay();
+            const obj=JSON.parse(r.result);
+            if(obj.moods)    save(KEY_MOODS,obj.moods);
+            if(obj.journal)  save(KEY_JOURNAL,obj.journal);
+            if(obj.badges)   save(KEY_BADGES,obj.badges);
+            if(obj.streak)   save(KEY_STREAK,obj.streak);
+            if(obj.pos!==undefined) save(KEY_POS,obj.pos);
+            if(obj.username) save(KEY_USERNAME,obj.username);
+            if(obj.avatar)   save(KEY_AVATAR,obj.avatar);
+            if(obj.points!==undefined) save(KEY_POINTS,obj.points);
+            if(obj.level!==undefined) save(KEY_LEVEL,obj.level);
+            renderJournal(); renderAchievements(); renderDashboard(); drawAnalytics();
             showToast('Import complete');
-          }catch(err){ infoModal('Import failed','Invalid file'); }
+          }catch(err){
+            infoModal('Import failed','Invalid file');
+          }
         };
         r.readAsText(f);
       });
 
-      // Avatar / name
+      // Emoji avatar
       const emojiSelect = document.getElementById('emojiAvatar');
       const saveEmojiBtn = document.getElementById('saveEmojiAvatar');
       const avatarPreview = document.getElementById('avatarPreview');
-      const savedEmoji = load(KEY_AVATAR,'😊') || '😊';
+      const savedEmoji = load(KEY_AVATAR,'😊');
       if(avatarPreview) avatarPreview.innerText = savedEmoji;
-      if(emojiSelect) emojiSelect.value = savedEmoji;
-      if(saveEmojiBtn) saveEmojiBtn.addEventListener('click', ()=>{ const emo = emojiSelect.value||'😊'; save(KEY_AVATAR, emo); if(avatarPreview) avatarPreview.innerText = emo; showToast('Emoji avatar saved'); });
+      if(emojiSelect)   emojiSelect.value = savedEmoji;
+      if(saveEmojiBtn){
+        saveEmojiBtn.addEventListener('click', ()=>{
+          const emo = emojiSelect.value || '😊';
+          save(KEY_AVATAR, emo);
+          if(avatarPreview) avatarPreview.innerText = emo;
+          showToast('Emoji avatar saved');
+        });
+      }
 
-      const voiceSelect = document.getElementById('voiceSelect');
-      const testVoiceBtn = document.getElementById('testVoice');
-      const saveNameBtn = document.getElementById('saveName');
-      const nameInput = document.getElementById('userNameInput');
+      // Voice controls
+      const voiceSelect=document.getElementById('voiceSelect');
+      const testVoiceBtn=document.getElementById('testVoice');
+      const saveNameBtn=document.getElementById('saveName');
+      const nameInput=document.getElementById('userNameInput');
       const settingsAll = load(KEY_SETTINGS,{});
-      setTimeout(refreshVoices,500);
-      if(testVoiceBtn) testVoiceBtn.addEventListener('click', ()=>{ const v = (nameInput.value||'friend').trim(); const idx = Number(voiceSelect.value)||0; speak(`Hello ${v}, welcome to BrightPath`, {voiceIndex: idx}); });
-      if(saveNameBtn) saveNameBtn.addEventListener('click', ()=>{ const v = (nameInput.value||'').trim(); save(KEY_USERNAME, v); document.getElementById('welcomeSmall').innerText = v?('Welcome, '+v):'Local & private'; showToast('Name saved'); speak('Nice to meet you, '+(v||'friend')); });
-
-      const savedName = load(KEY_USERNAME,''); if(nameInput) nameInput.value = savedName; if(savedName) document.getElementById('welcomeSmall').innerText = 'Welcome, '+savedName;
+      if(testVoiceBtn){
+        testVoiceBtn.addEventListener('click', ()=>{
+          const v = (nameInput.value||'friend').trim();
+          const idx = Number(voiceSelect.value)||0;
+          speak(`Hello ${v}, welcome to BrightPath`,{voiceIndex:idx});
+        });
+      }
+      if(saveNameBtn){
+        saveNameBtn.addEventListener('click', ()=>{
+          const v=(nameInput.value||'').trim();
+          save(KEY_USERNAME,v);
+          document.getElementById('welcomeSmall').innerText = v?('Welcome, '+v):'Local & private';
+          showToast('Name saved');
+          speak('Nice to meet you, '+(v||'friend'));
+        });
+      }
+      const savedName=load(KEY_USERNAME,'');
+      if(nameInput) nameInput.value = savedName;
+      if(savedName) document.getElementById('welcomeSmall').innerText = 'Welcome, '+savedName;
 
       // Settings toggles & theme
-      const darkToggle = document.getElementById('darkToggle'); // not used but leave
-      const voiceAssistantToggle = document.getElementById('voiceAssistantToggle');
-      const voiceOnSave = document.getElementById('voiceOnSave');
+      const darkToggle=document.getElementById('darkToggle');
+      const voiceAssistantToggle=document.getElementById('voiceAssistantToggle');
+      const voiceOnSave=document.getElementById('voiceOnSave');
       const meditationToggle = document.getElementById('meditationToggle');
-      // theme selection elements
-      document.querySelectorAll('.theme-option').forEach(opt=>{
-        opt.addEventListener('click', ()=>{ const t = opt.dataset.theme || 'light'; document.body.setAttribute('data-theme', t); localStorage.setItem(KEY_THEME, t); document.querySelectorAll('.theme-option').forEach(o=>o.classList.remove('active')); opt.classList.add('active'); });
-      });
-      const currentTheme = localStorage.getItem(KEY_THEME) || 'light';
-      document.body.setAttribute('data-theme', currentTheme);
-      document.querySelectorAll('.theme-option').forEach(o=>{ if(o.dataset.theme === currentTheme) o.classList.add('active'); });
 
-      if(voiceAssistantToggle){ voiceAssistantToggle.checked = settingsAll.voiceAssistant||false; voiceAssistantToggle.addEventListener('change', ()=>{ const s = load(KEY_SETTINGS,{}); s.voiceAssistant = voiceAssistantToggle.checked; save(KEY_SETTINGS,s); }); }
-      if(voiceOnSave){ voiceOnSave.checked = settingsAll.voiceOnSave||false; voiceOnSave.addEventListener('change', ()=>{ const s = load(KEY_SETTINGS,{}); s.voiceOnSave = voiceOnSave.checked; save(KEY_SETTINGS,s); }); }
-      if(meditationToggle){ meditationToggle.checked = load(KEY_MEDITATION,false); meditationToggle.addEventListener('change', (e)=>{ save(KEY_MEDITATION, e.target.checked); showToast('Meditation voice mode updated'); }); }
+      if(darkToggle){
+        const t = localStorage.getItem(KEY_THEME)||'light';
+        document.body.setAttribute('data-theme',t);
+        darkToggle.checked = t==='dark';
+        darkToggle.addEventListener('change', ()=>{
+          const mode = darkToggle.checked?'dark':'light';
+          document.body.setAttribute('data-theme',mode);
+          localStorage.setItem(KEY_THEME,mode);
+        });
+      }
+
+      if(voiceAssistantToggle){
+        voiceAssistantToggle.checked = settingsAll.voiceAssistant||false;
+        voiceAssistantToggle.addEventListener('change', ()=>{
+          const s = load(KEY_SETTINGS,{});
+          s.voiceAssistant = voiceAssistantToggle.checked;
+          save(KEY_SETTINGS,s);
+        });
+      }
+      if(voiceOnSave){
+        voiceOnSave.checked = settingsAll.voiceOnSave||false;
+        voiceOnSave.addEventListener('change', ()=>{
+          const s = load(KEY_SETTINGS,{});
+          s.voiceOnSave = voiceOnSave.checked;
+          save(KEY_SETTINGS,s);
+        });
+      }
+      if(meditationToggle){
+        meditationToggle.checked = load(KEY_MEDITATION,false);
+        meditationToggle.addEventListener('change', (e)=>{
+          save(KEY_MEDITATION, e.target.checked);
+          showToast('Meditation voice mode updated');
+        });
+      }
+
+      // Voice-guided breathing checkbox wiring
+      const voiceGuideChk = document.getElementById('voiceGuide');
+      if(voiceGuideChk){
+        const s = load(KEY_SETTINGS,{});
+        voiceGuideChk.checked = !!s.voiceGuide;
+        voiceGuideChk.addEventListener('change', (e)=>{
+          const st = load(KEY_SETTINGS,{});
+          st.voiceGuide = !!e.target.checked;
+          save(KEY_SETTINGS,st);
+          showToast('Voice-guided breathing preference saved');
+        });
+      }
 
       // Daily reminder
       const dailyInput = document.getElementById('dailyTime');
-      const saveDailyBtn = document.getElementById('saveDaily');
+      const saveDaily=document.getElementById('saveDaily');
       const savedDaily = load(KEY_DAILY,null);
       if(savedDaily && dailyInput) dailyInput.value = savedDaily;
-      if(saveDailyBtn) saveDailyBtn.addEventListener('click', ()=>{ const v = dailyInput.value; if(!v) return showToast('Pick a time'); save(KEY_DAILY, v); showToast('Daily reminder saved'); });
+      if(saveDaily) saveDaily.addEventListener('click', ()=>{
+        const v=dailyInput.value;
+        if(!v) return showToast('Pick a time');
+        save(KEY_DAILY,v);
+        showToast('Daily reminder saved');
+      });
 
       function checkDailyReminder(){
-        const v = load(KEY_DAILY,null); if(!v) return;
-        const moods = load(KEY_MOODS,[]); const last = moods.length?moods[moods.length-1].ts:0; const now = Date.now();
+        const v = load(KEY_DAILY,null);
+        if(!v) return;
+        const moods = load(KEY_MOODS,[]);
+        const last = moods.length?moods[moods.length-1].ts:0;
+        const now = Date.now();
         const [hh,mm] = v.split(':').map(Number);
-        const todayCheck = new Date(); todayCheck.setHours(hh,mm,0,0);
+        const todayCheck = new Date();
+        todayCheck.setHours(hh,mm,0,0);
         if(now>todayCheck.getTime() && (!last || (now - last) > 24*3600*1000)) {
           infoModal('Daily Check-In',"You haven't logged a mood in 24h. Quick check-in?");
           if(load(KEY_SETTINGS,{}).voiceAssistant) speak('You have not logged a mood today. Quick check-in?');
@@ -1028,136 +993,316 @@
       setTimeout(checkDailyReminder,1500);
 
       // Navigation
-      const nav = document.getElementById('nav');
-      nav.addEventListener('click', (e)=>{
-        const btn = e.target.closest('button'); if(!btn) return;
+      const nav=document.getElementById('nav');
+      nav.addEventListener('click',(e)=>{
+        const btn=e.target.closest('button');
+        if(!btn) return;
         nav.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
         btn.classList.add('active');
-        const page = btn.dataset.page;
-        document.querySelectorAll('.page').forEach(p=>{ if(p.id===page) p.classList.add('active'); else p.classList.remove('active'); });
-        if(page==='analytics') setTimeout(drawAnalytics, 350);
+        const t=btn.dataset.page;
+        document.querySelectorAll('.page').forEach(p=>{ if(p.id===t) p.classList.add('active'); else p.classList.remove('active'); });
+        if(t==='analytics') setTimeout(drawAnalytics,350);
       });
-      // quick dashboard buttons
-      const dash = document.getElementById('dashboard');
-      if(dash){
-        const gotoJournalBtn = dash.querySelector('#gotoJournal'); if(gotoJournalBtn) gotoJournalBtn.addEventListener('click', ()=>{ document.querySelector('[data-page="journal"]').click(); });
-        const gotoBreathBtn = dash.querySelector('#gotoBreath'); if(gotoBreathBtn) gotoBreathBtn.addEventListener('click', ()=>{ document.querySelector('[data-page="breathing"]').click(); });
-        const gotoAnalyticsBtn = dash.querySelector('#gotoAnalytics'); if(gotoAnalyticsBtn) gotoAnalyticsBtn.addEventListener('click', ()=>{ document.querySelector('[data-page="analytics"]').click(); });
-      }
 
-      // Render dashboard (complete)
-      function dateKey(ts){ const d=new Date(ts); return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
-      function renderDashboard(){
-        const moods = load(KEY_MOODS,[]) || [];
-        const badges = load(KEY_BADGES,[]) || [];
-        const dash = document.getElementById('dashBadges');
-        if(dash) dash.innerHTML='';
-        (badges||[]).forEach(id=>{
-          const info = badgeDefs[id] || {emoji:'🏅', title:id};
-          const el = document.createElement('div');
-          el.style.background='rgba(255,255,255,0.08)';
-          el.style.padding='6px 8px';
-          el.style.borderRadius='999px';
-          el.innerText = info.emoji + ' ' + info.title;
-          dash.appendChild(el);
-        });
-        const today = document.getElementById('todayMoodLarge'); if(today) today.innerText = moods.length ? moods[moods.length-1].mood : '—';
-        const sc = document.getElementById('streakCount'); if(sc) sc.innerText = (load(KEY_STREAK,{streak:0}).streak || 0);
-        const ps = document.getElementById('posStreak'); if(ps) ps.innerText = load(KEY_POS,0) || 0;
-        // points & level
-        updatePointsDisplay();
-        computeWellness();
-      }
-
-      // check and unlock badges (also safe)
-      function checkAndUnlockBadges(newEntry){
-        const streakData = load(KEY_STREAK, {lastDate:null, streak:0}) || {lastDate:null, streak:0};
-        const lastKey = streakData.lastDate;
-        const todayKey = dateKey(newEntry.ts);
-        if(!lastKey){
-          streakData.lastDate = todayKey; streakData.streak = 1;
-        } else {
-          const lp = lastKey.split('-');
-          const lastDate = new Date(Number(lp[0]), Number(lp[1])-1, Number(lp[2]));
-          const tDate = new Date(new Date(newEntry.ts).getFullYear(), new Date(newEntry.ts).getMonth(), new Date(newEntry.ts).getDate());
-          const diff = Math.round((tDate - lastDate)/(24*3600*1000));
-          if(diff===0) { /* same day */ }
-          else if(diff===1){ streakData.streak += 1; streakData.lastDate = todayKey; }
-          else { streakData.streak = 1; streakData.lastDate = todayKey; }
-        }
-        save(KEY_STREAK, streakData);
-        let pos = load(KEY_POS, 0) || 0;
-        if(newEntry.mood==='😊' || newEntry.mood==='🤩' || newEntry.mood==='🙂') pos += 1; else pos = 0;
-        save(KEY_POS, pos);
-        const moods = load(KEY_MOODS,[]) || []; const total = moods.length;
-        const badges = load(KEY_BADGES,[]) || [];
-        const addBadge = id => {
-          if(!badges.includes(id)){
-            badges.push(id); save(KEY_BADGES, badges); renderAchievements(); showConfettiOnce(); successModal('Achievement','You unlocked: '+(badgeDefs[id]?badgeDefs[id].emoji+' '+badgeDefs[id].title:id));
-            addPoints(25, 'Unlocked badge: '+id);
-          }
-        };
-        if(streakData.streak>=3) addBadge('streak_3');
-        if(streakData.streak>=7) addBadge('streak_7');
-        if(streakData.streak>=14) addBadge('streak_14');
-        if(streakData.streak>=30) addBadge('streak_30');
-        if(pos>=5) addBadge('positive_5');
-        if(total>=10) addBadge('total_10');
-        if(total>=25) addBadge('total_25');
-        if(total>=50) addBadge('total_50');
-        if(total>=100) addBadge('total_100');
-        const negCount = moods.slice().reverse().slice(0,10).filter(x=>x.mood==='😔'||x.mood==='😣'||x.mood==='😢').length;
-        if(negCount>=5) addBadge('resilience_5neg');
-        renderDashboard();
-      }
-
-      // Wellness compute
-      function computeWellness(){
-        const moods = load(KEY_MOODS,[]) || [];
-        if(moods.length===0) return;
-        const mapVal=m=> (m==='🤩'||m==='😊'||m==='🙂')?4:(m==='😐')?2:(m==='😔'||m==='😣'||m==='😢')?1:0;
-        const last7 = moods.slice(-7);
-        const avg = last7.reduce((s,i)=>s+mapVal(i.mood),0)/(last7.length||1);
-        const txt = (avg>=3.5)?'Excellent':(avg>=2.5)?'Good':(avg>=1.5)?'Average':'Low';
-        const el = document.getElementById('wellnessScore'); if(el) el.innerText = txt;
-      }
-
-      // set daily quote and render
-      setDailyQuote();
-
-      // Render meditation library (simple)
-      function renderMeditations(){
-        const lib = [
-          {id:'m1', title:'2-minute reset', dur:120, desc:'Short grounding practice'},
-          {id:'m2', title:'5-minute calm', dur:300, desc:'Quick calm breathing'},
-          {id:'m3', title:'10-minute focus', dur:600, desc:'Longer focus practice'}
-        ];
-        const wrap = document.getElementById('meditationLibrary');
-        if(!wrap) return;
-        wrap.innerHTML = '';
-        lib.forEach(m=>{
-          const c = document.createElement('div'); c.className='meditation-card';
-          c.innerHTML = `<div style="font-weight:700">${m.title}</div><div class="small">${m.desc}</div><div style="margin-top:8px"><button class="btn play" data-id="${m.id}">Play</button></div>`;
-          wrap.appendChild(c);
-        });
-        wrap.querySelectorAll('button.play').forEach(b=>b.addEventListener('click', (e)=>{
-          const id = e.target.dataset.id;
-          successModal('Meditation','Playing '+id+' (demo)'); // placeholder: integrate real audio if available
-          addPoints(6,'Meditation session');
-        }));
-      }
-
-      // initial render calls
-      renderJournal(); renderHabits(); renderAchievements(); renderDashboard(); drawAnalytics(); renderMeditations(); renderCommunity(); updatePointsDisplay();
-
-      // analytics button extra trigger
       const analyticsBtn = document.querySelector('[data-page="analytics"]');
-      if(analyticsBtn) analyticsBtn.addEventListener('click', ()=>{ setTimeout(drawAnalytics, 400); });
+      if(analyticsBtn) analyticsBtn.addEventListener('click', ()=>{ setTimeout(drawAnalytics,350); });
 
-      // confetti resize
-      window.addEventListener('resize', ()=>{ if(confCanvas){ confCanvas.width = window.innerWidth; confCanvas.height = window.innerHeight; } });
+      // Habits (basic)
+      function renderHabits(){
+        const container = document.getElementById('habitsContainer');
+        if(!container) return;
+        const habits = load(KEY_HABITS,[]);
+        container.innerHTML = '';
+        habits.forEach((h,i)=>{
+          const div = document.createElement('div');
+          div.className = 'habit-item';
+          div.innerHTML = `<div>
+            <div style="font-weight:700">${escapeHtml(h.name)}</div>
+            <div class="habit-days">${createHabitDaysHTML(h.days)}</div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <button class="btn habit-toggle" data-i="${i}">Toggle</button>
+            <button class="btn habit-del" data-i="${i}">Delete</button>
+          </div>`;
+          container.appendChild(div);
+        });
+        container.querySelectorAll('.habit-del').forEach(b=>{
+          b.addEventListener('click', e=>{
+            const idx = Number(e.target.dataset.i);
+            const arr = load(KEY_HABITS,[]);
+            arr.splice(idx,1); save(KEY_HABITS,arr); renderHabits();
+          });
+        });
+        container.querySelectorAll('.habit-toggle').forEach(b=>{
+          b.addEventListener('click', e=>{
+            const idx = Number(e.target.dataset.i);
+            const arr = load(KEY_HABITS,[]);
+            arr[idx].doneToday = !arr[idx].doneToday;
+            save(KEY_HABITS,arr);
+            if(arr[idx].doneToday) addPoints(3,'Habit progress');
+            renderHabits();
+          });
+        });
+      }
 
-      // Self-tests in console
+      function createHabitDaysHTML(days){
+        // days is array of booleans for 7 days or empty
+        if(!days || !days.length) return '';
+        return days.map((d,idx)=>`<div class="habit-day ${d?'done':''}">${idx+1}</div>`).join('');
+      }
+
+      document.getElementById('addHabitBtn').addEventListener('click', ()=>{
+        const name = document.getElementById('newHabitInput').value.trim();
+        if(!name) return showToast('Type a habit name');
+        const arr = load(KEY_HABITS,[]);
+        arr.push({name,days:[false,false,false,false,false,false,false],doneToday:false});
+        save(KEY_HABITS,arr);
+        document.getElementById('newHabitInput').value='';
+        renderHabits();
+        showToast('Habit added');
+      });
+
+      // Community basic
+      function renderCommunity(){
+        const feedEl = document.getElementById('communityFeed');
+        feedEl.innerHTML = '';
+        const posts = load(KEY_COMMUNITY,[]);
+        posts.slice().reverse().forEach(p=>{
+          const d = document.createElement('div'); d.className='community-post';
+          d.innerHTML = `<div style="font-size:12px;opacity:0.8">${new Date(p.ts).toLocaleString()}</div><div style="margin-top:6px">${escapeHtml(p.text)}</div>`;
+          feedEl.appendChild(d);
+        });
+      }
+      document.getElementById('sharePostBtn').addEventListener('click', ()=>{
+        const t = document.getElementById('communityPost').value.trim();
+        if(!t) return showToast('Write something first');
+        const arr = load(KEY_COMMUNITY,[]);
+        arr.push({text:t,ts:Date.now()});
+        save(KEY_COMMUNITY,arr);
+        document.getElementById('communityPost').value='';
+        renderCommunity();
+        addPoints(4,'Community share');
+        showToast('Shared anonymously');
+      });
+
+      // DAILY QUOTE (simple)
+      const QUOTES = [
+        "Small steps are still progress.",
+        "You are more capable than you think.",
+        "Breathe. Focus. Move forward.",
+        "Consistency builds momentum.",
+        "You belong. You matter."
+      ];
+      (function loadDailyQuote(){
+        try{
+          const todayKey = new Date().toISOString().slice(0,10);
+          const stored = load('bp_daily_quote',{date:'',quote:''});
+          let quote = stored.quote || QUOTES[Math.floor(Math.random()*QUOTES.length)];
+          if(stored.date !== todayKey){
+            quote = QUOTES[Math.floor(Math.random()*QUOTES.length)];
+            save('bp_daily_quote', {date: todayKey, quote});
+          }
+          const el = document.getElementById('dailyQuote');
+          if(el) el.innerText = quote;
+        }catch(e){}
+      })();
+
+      // Meditation Library (voice-guided) - your selected meditations 1,2,3,5,6,8
+      const MEDITATIONS = [
+        { id:'med_2min_reset', title:'2-Minute Calm Reset', duration:120, script:[
+            "Close your eyes if you feel comfortable. Take a slow, deep breath in... and out.",
+            "Bring your attention to the rhythm of the breath. Inhale... and exhale.",
+            "Release tension from your shoulders. Allow the breath to soften your face.",
+            "Notice a single positive thing — even a small one — and hold it gently.",
+            "When you're ready, open your eyes. Carry this calm forward."
+          ]},
+        { id:'med_5min_ground', title:'5-Minute Grounding', duration:300, script:[
+            "Sit comfortably. Let your feet connect to the floor. Take a deep breath in... and out.",
+            "Scan your body from head to toe — relax the jaw, shoulders, chest, belly, legs.",
+            "Feel the support beneath you. Breathe and feel grounded in the present moment.",
+            "If your mind wanders, gently bring it back to the breath. No judgement.",
+            "Take three slower breaths now, and honour this moment of rest."
+          ]},
+        { id:'med_10min_focus', title:'10-Minute Focus', duration:600, script:[
+            "Settle into a comfortable posture. Soft gaze or closed eyes. Breathe slowly.",
+            "Focus on the natural breath. Follow the inhale and follow the exhale.",
+            "If thoughts arise, notice them and let them pass like clouds in the sky.",
+            "Return your attention to the breath, each time with patience and kindness.",
+            "Gently widen your awareness and prepare to return, feeling clearer and more present."
+          ]},
+        { id:'med_stress_release', title:'Stress Release (5 min)', duration:300, script:[
+            "Take a deep breath in... and out. Let the shoulders drop.",
+            "Imagine breathing in calm, and breathing out tension. Inhale calm — exhale stress.",
+            "Scan for tightness and invite each area to soften as you breathe.",
+            "Remind yourself that you can handle small steps. Release what you don't need.",
+            "Finish with a slow deep breath. You did well to pause and care for yourself."
+          ]},
+        { id:'med_confidence_boost', title:'Self-Confidence Booster (4 min)', duration:240, script:[
+            "Sit tall and breathe in confidence. Breath out any doubt.",
+            "Recall a moment you did well — feel how your body was then.",
+            "Repeat these short affirmations in your mind: I can. I learn. I grow.",
+            "Let these words sink in with each breath — steady and kind.",
+            "Carry this calm confidence forward into your day."
+          ]},
+        { id:'med_sleep_ease', title:'Sleep-Ease (8 min)', duration:480, script:[
+            "Find a comfortable position, ideally lying down.",
+            "Breathe slowly and imagine each exhale softening your body.",
+            "Relax your forehead, jaw, neck, shoulders, chest, belly, legs and feet.",
+            "With every breath release the day's tension. Let thoughts float away.",
+            "Drift gently. If you fall asleep, the voice will stop automatically."
+          ]}
+      ];
+
+      let meditationState = { running:false, currentMeditationId:null, remaining:0, intervalTimer:null, speakQueueTimers:[] };
+
+      function renderMeditationLibrary(){
+        const lib = document.getElementById('meditationLibrary');
+        if(!lib) return;
+        lib.innerHTML = '';
+        MEDITATIONS.forEach(m => {
+          const card = document.createElement('div');
+          card.className = 'meditation-card';
+          card.style.display = 'flex';
+          card.style.flexDirection = 'column';
+          card.style.gap = '8px';
+          card.style.padding = '14px';
+          card.style.borderRadius = '12px';
+          card.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02))';
+          card.innerHTML = `
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <div style="font-size:16px;font-weight:700">${m.title}</div>
+                <div class="small" style="margin-top:4px">${Math.round(m.duration/60)} min · Voice-guided</div>
+              </div>
+              <div style="text-align:right">
+                <div class="small">Reward</div>
+                <div style="font-weight:700;margin-top:6px">+${Math.max(5,Math.round(m.duration/60*5))} pts</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;margin-top:8px">
+              <button class="btn start-med" data-id="${m.id}">Start</button>
+              <button class="btn stop-med" data-id="${m.id}" style="display:none">Stop</button>
+              <div style="flex:1">
+                <div style="font-size:12px" class="med-timer" data-id="${m.id}">Ready</div>
+                <div class="level-progress" style="margin-top:6px">
+                  <div class="level-bar" data-bar="${m.id}" style="width:0%"></div>
+                </div>
+              </div>
+            </div>
+          `;
+          lib.appendChild(card);
+        });
+
+        lib.querySelectorAll('.start-med').forEach(btn=>{
+          btn.addEventListener('click', ()=> startMeditation(btn.dataset.id));
+        });
+        lib.querySelectorAll('.stop-med').forEach(btn=>{
+          btn.addEventListener('click', ()=> stopMeditation(btn.dataset.id));
+        });
+      }
+
+      function secondsToMMSS(s){ const mm = Math.floor(s/60).toString().padStart(2,'0'); const ss = Math.floor(s%60).toString().padStart(2,'0'); return `${mm}:${ss}`; }
+      function clearMeditationTimers(){ meditationState.intervalTimer && clearInterval(meditationState.intervalTimer); meditationState.speakQueueTimers.forEach(t => clearTimeout(t)); meditationState.speakQueueTimers = []; try{ speechSynthesis.cancel(); }catch(e){} }
+
+      function updateMeditationUI(id, remaining, total){
+        const timerEl = document.querySelector(`.med-timer[data-id="${id}"]`);
+        const barEl = document.querySelector(`.level-bar[data-bar="${id}"]`);
+        const startBtn = document.querySelector(`.start-med[data-id="${id}"]`);
+        const stopBtn = document.querySelector(`.stop-med[data-id="${id}"]`);
+        if(timerEl) timerEl.innerText = remaining>0 ? secondsToMMSS(remaining) : 'Done';
+        if(barEl) { const pct = total ? Math.max(0, Math.min(100, (1 - (remaining/total)) * 100)) : 0; barEl.style.width = pct + '%'; }
+        if(startBtn) startBtn.style.display = meditationState.running && meditationState.currentMeditationId===id ? 'none' : '';
+        if(stopBtn)  stopBtn.style.display  = meditationState.running && meditationState.currentMeditationId===id ? '' : 'none';
+      }
+
+      function startMeditation(id){
+        if(meditationState.running) stopMeditation(meditationState.currentMeditationId);
+        const m = MEDITATIONS.find(x => x.id === id); if(!m) return;
+        meditationState.running = true; meditationState.currentMeditationId = id; meditationState.remaining = m.duration;
+        const medMode = load(KEY_MEDITATION, false);
+        const settings = load(KEY_SETTINGS, {});
+        const voiceGuideEnabled = settings.voiceGuide || false;
+        const intro = `Starting ${m.title}. Duration ${Math.round(m.duration/60)} minutes. Find a comfortable position.`;
+        speak(intro);
+        const lines = m.script;
+        const partDur = Math.max(2, Math.floor(m.duration / Math.max(1, lines.length)));
+        let offset = 1200;
+        meditationState.speakQueueTimers.push(setTimeout(()=>{ if(voiceGuideEnabled) speak(lines[0]); }, offset));
+        for(let i=0;i<lines.length;i++){
+          const line = lines[i];
+          const t = offset + i * partDur * 1000;
+          const timerId = setTimeout(()=>{ if(voiceGuideEnabled) speak(line); }, t);
+          meditationState.speakQueueTimers.push(timerId);
+        }
+        updateMeditationUI(id, meditationState.remaining, m.duration);
+        meditationState.intervalTimer = setInterval(()=>{
+          meditationState.remaining -= 1;
+          updateMeditationUI(id, meditationState.remaining, m.duration);
+          if(meditationState.remaining <= 0){
+            clearMeditationTimers();
+            meditationState.running = false; meditationState.currentMeditationId = null; meditationState.remaining = 0;
+            updateMeditationUI(id, 0, m.duration);
+            const reward = Math.max(5, Math.round(m.duration/60*5));
+            addPoints(reward, `Meditation: ${m.title}`);
+            const medCounts = load('bp_med_counts', {});
+            medCounts[id] = (medCounts[id]||0) + 1; save('bp_med_counts', medCounts);
+            const totalSessions = Object.values(medCounts).reduce((s,v)=>s+v,0);
+            if(totalSessions >= 5){
+              const badges = load(KEY_BADGES, []);
+              if(!badges.includes('meditation_5')) { badges.push('meditation_5'); save(KEY_BADGES, badges); renderAchievements(); showConfettiOnce(); successModal('Achievement Unlocked','🧘 Meditation Master — logged 5 meditations'); }
+            }
+            const badges = load(KEY_BADGES, []);
+            if(!badges.includes('meditation_1')){ badges.push('meditation_1'); save(KEY_BADGES,badges); renderAchievements(); }
+            showToast(`Meditation complete — +${reward} pts`);
+          }
+        }, 1000);
+        updateMeditationUI(id, meditationState.remaining, m.duration);
+      }
+
+      function stopMeditation(id){
+        if(!meditationState.running) return;
+        clearMeditationTimers();
+        meditationState.running = false;
+        const prevId = meditationState.currentMeditationId;
+        meditationState.currentMeditationId = null;
+        meditationState.remaining = 0;
+        if(prevId) updateMeditationUI(prevId, 0, 1);
+        showToast('Meditation stopped');
+      }
+
+      document.getElementById('nav').addEventListener('click', (e)=>{
+        const btn = e.target.closest('button');
+        if(!btn) return;
+        const target = btn.dataset.page;
+        if(meditationState.running && target !== 'meditation'){ stopMeditation(meditationState.currentMeditationId); }
+      });
+      window.addEventListener('beforeunload', ()=>{ if(meditationState.running) stopMeditation(meditationState.currentMeditationId); });
+
+      // Initial render calls and wiring
+      renderMeditationLibrary();
+      renderJournal();
+      renderAchievements();
+      renderDashboard();
+      drawAnalytics();
+      renderHabits();
+      renderCommunity();
+      updatePointsDisplay();
+
+      // Small UI wiring for quick nav buttons on dashboard
+      const dash=document.getElementById('dashboard');
+      if(dash){
+        const gotoJournalBtn=dash.querySelector('#gotoJournal');
+        if(gotoJournalBtn) gotoJournalBtn.addEventListener('click', ()=>{ document.querySelector('[data-page="journal"]').click(); });
+        const gotoBreathBtn=dash.querySelector('#gotoBreath');
+        if(gotoBreathBtn) gotoBreathBtn.addEventListener('click', ()=>{ document.querySelector('[data-page="breathing"]').click(); });
+        const gotoAnalyticsBtn=dash.querySelector('#gotoAnalytics');
+        if(gotoAnalyticsBtn) gotoAnalyticsBtn.addEventListener('click', ()=>{ document.querySelector('[data-page="analytics"]').click(); });
+      }
+
+      // small responsive confetti resize
+      window.addEventListener('resize', ()=>{ if(confCanvas){ confCanvas.width=window.innerWidth; confCanvas.height=window.innerHeight; } });
+
+      // self-tests
       console.group('BrightPath Tests');
       try{
         console.assert(Array.isArray(load(KEY_MOODS,[])),'moods exists');
@@ -1166,10 +1311,10 @@
         console.log('Self-tests OK');
       }catch(e){ console.error(e); }
       console.groupEnd();
-
-    }); // DOMContentLoaded end
+    });
   </script>
 </body>
 </html>
+
 
 
