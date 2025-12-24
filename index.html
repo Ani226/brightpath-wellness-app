@@ -910,22 +910,36 @@
       if(nameInput) nameInput.value = savedName;
       if(savedName) document.getElementById('welcomeSmall').innerText = 'Welcome, '+savedName;
 
-      // Settings toggles & theme
-      const darkToggle=document.getElementById('darkToggle');
-      const voiceAssistantToggle=document.getElementById('voiceAssistantToggle');
-      const voiceOnSave=document.getElementById('voiceOnSave');
-      const meditationToggle = document.getElementById('meditationToggle');
+     // ===== THEME SYSTEM FIX =====
+const themeOptions = document.querySelectorAll('.theme-option');
 
-      if(darkToggle){
-        const t = localStorage.getItem(KEY_THEME)||'light';
-        document.body.setAttribute('data-theme',t);
-        darkToggle.checked = t==='dark';
-        darkToggle.addEventListener('change', ()=>{
-          const mode = darkToggle.checked?'dark':'light';
-          document.body.setAttribute('data-theme',mode);
-          localStorage.setItem(KEY_THEME,mode);
-        });
-      }
+// Load saved theme
+const savedTheme = localStorage.getItem(KEY_THEME) || 'light';
+document.body.setAttribute('data-theme', savedTheme);
+
+// Highlight active theme
+themeOptions.forEach(opt => {
+  if (opt.dataset.theme === savedTheme) {
+    opt.classList.add('active');
+  }
+});
+
+// Click handling
+themeOptions.forEach(opt => {
+  opt.addEventListener('click', () => {
+    const theme = opt.dataset.theme;
+
+    // Apply theme
+    document.body.setAttribute('data-theme', theme);
+    localStorage.setItem(KEY_THEME, theme);
+
+    // Update UI
+    themeOptions.forEach(o => o.classList.remove('active'));
+    opt.classList.add('active');
+
+    showToast(`Theme changed to ${theme}`);
+  });
+});
 
       if(voiceAssistantToggle){
         voiceAssistantToggle.checked = settingsAll.voiceAssistant||false;
