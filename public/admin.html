@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BrightPath | Admin Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #f4f6ff;
+  margin: 0;
+  padding: 20px;
+}
+
+h2 {
+  color: #4f46e5;
+}
+
+h3 {
+  margin-top: 0;
+  color: #4f46e5;
+}
+
+.container {
+  max-width: 1100px;
+  margin: auto;
+}
+
+/* CARD */
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+}
+
+/* FLEX */
+.flex {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* SMALL CHART BOX */
+.chart-box {
+  width: 250px;
+  text-align: center;
+}
+
+/* FILTERS */
+input, select {
+  padding: 8px;
+  margin-right: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* LISTS */
+ul {
+  padding-left: 20px;
+}
+
+li {
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+  .flex {
+    flex-direction: column;
+  }
+  .chart-box {
+    width: 100%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>🧑‍💼 Admin Dashboard</h2>
+
+  <!-- FILTERS -->
+  <div class="card">
+    <h3>🔍 Filters</h3>
+    <input type="text" id="emailFilter" placeholder="Filter by email">
+    <select id="moodFilter">
+      <option value="">All moods</option>
+      <option value="Happy">Happy</option>
+      <option value="Okay">Okay</option>
+      <option value="Stressed">Stressed</option>
+      <option value="Anxious">Anxious</option>
+      <option value="Sad">Sad</option>
+    </select>
+    <button onclick="loadData()">Apply</button>
+  </div>
+
+  <!-- ANALYTICS -->
+  <div class="card">
+    <h3>📊 Mood Analytics</h3>
+
+    <div class="flex">
+      <div class="chart-box">
+        <canvas id="moodChart"></canvas>
+        <p>Mood Distribution</p>
+      </div>
+
+      <div class="chart-box">
+        <canvas id="stressChart"></canvas>
+        <p>Stress Levels</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOODS -->
+  <div class="card">
+    <h3>🧠 Mood Submissions</h3>
+    <ul id="moodList"></ul>
+  </div>
+
+  <!-- FEEDBACK -->
+  <div class="card">
+    <h3>💬 User Feedback</h3>
+    <ul id="feedbackList"></ul>
+  </div>
+
+  <!-- ANONYMOUS -->
+  <div class="card">
+    <h3>🕊️ Anonymous Confessions</h3>
+    <ul id="anonymousList"></ul>
+  </div>
+</div>
+
+<script>
+let moodChart, stressChart;
+
+function loadData() {
+  const email = document.getElementById("emailFilter").value;
+  const mood = document.getElementById("moodFilter").value;
+
+  fetch(`/admin/data?email=${email}&mood=${mood}`)
+    .then(res => res.json())
+    .then(data => {
+      renderMoods(data.moods);
+      renderFeedback(data.feedbacks);
+      renderCharts(data.moods);
+    });
+
+  fetch("/admin/anonymous")
+    .then(res => res.json())
+    .then(renderAnonymous);
+}
+
+function renderMoods(moods) {
+  const list = document.getElementById("moodList");
+  list.innerHTML = "";
+  moods.forEach(m => {
+    const li = document.createElement("li");
+    li.innerText =
+      `${m.userEmail} — ${m.mood} (Stress: ${m.stressLevel})`;
+    list.appendChild(li);
+  });
+}
+
+function renderFeedback(feedbacks) {
+  const list = document.getElementById("feedbackList");
+  list.innerHTML = "";
+  feedbacks.forEach(f => {
+    const li = document.createElement("li");
+    li.innerText = `${f.userEmail} — ${f.message}`;
+    list.appendChild(li);
+  });
+}
+
+function renderAnonymous(messages) {
+  const list = document.getElementById("anonymousList");
+  list.innerHTML = "";
+  messages.forEach(a => {
+    const li = document.createElement("li");
+    li.innerText =
+      `${new Date(a.createdAt).toLocaleString()} — ${a.message}`;
+    list.appendChild(li);
+  });
+}
+
+function renderCharts(moods) {
+  const moodCount = {};
+  const stressCount = {};
+
+  moods.forEach(m => {
+    const key = m.mood.split(" ")[0];
+    moodCount[key] = (moodCount[key] || 0) + 1;
+
+    const s = m.stressLevel;
+    stressCount[s] = (stressCount[s] || 0) + 1;
+  });
+
+  if (moodChart) moodChart.destroy();
+  if (stressChart) stressChart.destroy();
+
+  moodChart = new Chart(
+    document.getElementById("moodChart"), {
+      type: "pie",
+      data: {
+        labels: Object.keys(moodCount),
+        datasets: [{
+          data: Object.values(moodCount)
+        }]
+      }
+    }
+  );
+
+  stressChart = new Chart(
+    document.getElementById("stressChart"), {
+      type: "pie",
+      data: {
+        labels: Object.keys(stressCount),
+        datasets: [{
+          data: Object.values(stressCount)
+        }]
+      }
+    }
+  );
+}
+
+loadData();
+</script>
+
+</body>
+</html>

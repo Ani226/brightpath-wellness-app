@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BrightPath | Sign Up</title>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(135deg, #22c55e, #86efac);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .card {
+      background: white;
+      padding: 30px;
+      width: 350px;
+      border-radius: 12px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+      text-align: center;
+      animation: fadeIn 0.8s ease;
+    }
+
+    h2 {
+      color: #16a34a;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: #6b7280;
+      margin-bottom: 25px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    input:focus {
+      border-color: #16a34a;
+      outline: none;
+    }
+
+    .password-box {
+      position: relative;
+    }
+
+    .password-box span {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      user-select: none;
+      font-size: 18px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #16a34a;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.3s;
+    }
+
+    button:hover {
+      background: #15803d;
+      transform: translateY(-2px);
+    }
+
+    .link {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .link a {
+      color: #16a34a;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+   
+    /* 📱 Mobile Responsive */
+@media (max-width: 480px) {
+  body {
+    padding: 20px;
+  }
+
+  .card {
+    width: 100%;
+    padding: 25px 20px;
+  }
+
+  h2 {
+    font-size: 22px;
+  }
+
+  p {
+    font-size: 14px;
+  }
+
+  input {
+    font-size: 15px;
+  }
+
+  button {
+    font-size: 16px;
+  }
+}
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h2>🌿 Create Account</h2>
+  <p>Start your BrightPath journey</p>
+
+  <form action="/signup" method="POST">
+    <input type="text" name="name" placeholder="Full Name" required>
+    <input type="email" name="email" placeholder="Email" required>
+
+    <div class="password-box">
+      <input type="password" name="password" id="signupPassword" placeholder="Password" required>
+      <span onclick="toggleSignupPassword()">👁️</span>
+    </div>
+
+    <button type="submit">Sign Up</button>
+  </form>
+
+  <div class="link">
+    Already have an account?
+    <a href="/login.html">Login</a>
+  </div>
+</div>
+
+<script>
+  function toggleSignupPassword() {
+    const input = document.getElementById("signupPassword");
+    input.type = input.type === "password" ? "text" : "password";
+  }
+</script>
+
+</body>
+</html>

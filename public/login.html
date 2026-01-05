@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BrightPath | Login</title>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(135deg, #6366f1, #a5b4fc);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .card {
+      background: white;
+      padding: 30px;
+      width: 350px;
+      border-radius: 12px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+      text-align: center;
+      animation: fadeIn 0.8s ease;
+    }
+
+    h2 {
+      color: #4f46e5;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: #6b7280;
+      margin-bottom: 25px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    input:focus {
+      border-color: #4f46e5;
+      outline: none;
+    }
+
+    .password-box {
+      position: relative;
+    }
+
+    .password-box span {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      user-select: none;
+      font-size: 18px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #4f46e5;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.3s;
+    }
+
+    button:hover {
+      background: #3730a3;
+      transform: translateY(-2px);
+    }
+
+    .link {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .link a {
+      color: #4f46e5;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* 📱 Mobile Responsive */
+@media (max-width: 480px) {
+  body {
+    padding: 20px;
+  }
+
+  .card {
+    width: 100%;
+    padding: 25px 20px;
+  }
+
+  h2 {
+    font-size: 22px;
+  }
+
+  p {
+    font-size: 14px;
+  }
+
+  input {
+    font-size: 15px;
+  }
+
+  button {
+    font-size: 16px;
+  }
+}
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h2>🌱 Welcome Back</h2>
+  <p>Login to continue your wellness journey</p>
+
+  <form action="/login" method="POST">
+    <input type="email" name="email" placeholder="Email" required>
+
+    <div class="password-box">
+      <input type="password" name="password" id="loginPassword" placeholder="Password" required>
+      <span onclick="toggleLoginPassword()">👁️</span>
+    </div>
+
+    <button type="submit">Login</button>
+  </form>
+
+  <div class="link">
+    Don’t have an account?
+    <a href="/signup.html">Sign up</a>
+  </div>
+</div>
+
+<script>
+  function toggleLoginPassword() {
+    const input = document.getElementById("loginPassword");
+    input.type = input.type === "password" ? "text" : "password";
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BrightPath | Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root {
+  --bg: #f4f6ff;
+  --card: #ffffff;
+  --text: #000000;
+  --primary: #4f46e5;
+}
+
+body.dark {
+  --bg: #0f172a;
+  --card: #1e293b;
+  --text: #e5e7eb;
+  --primary: #6366f1;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  transition: 0.3s;
+}
+
+/* NAVBAR */
+.navbar {
+  background: var(--primary);
+  color: white;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* CONTAINER */
+.container {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* CARD */
+.card {
+  background: var(--card);
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+h3 {
+  color: var(--primary);
+}
+
+/* INPUTS */
+input, textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+button {
+  margin-top: 10px;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  background: var(--primary);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* MOOD */
+.mood-btn {
+  font-size: 24px;
+  padding: 10px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  background: #e0e7ff;
+  cursor: pointer;
+}
+
+.mood-btn.active {
+  border-color: var(--primary);
+}
+
+/* BREATHING */
+#circle {
+  width: 120px;
+  height: 120px;
+  margin: 20px auto;
+  border-radius: 50%;
+  background: #c7d2fe;
+  transition: transform 4s ease-in-out;
+}
+
+/* TOAST */
+#toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #22c55e;
+  color: white;
+  padding: 12px 18px;
+  border-radius: 8px;
+  opacity: 0;
+  transition: opacity 0.4s;
+  z-index: 1000;
+}
+
+/* CRISIS CARD */
+#crisisCard {
+  border-left: 5px solid #ef4444;
+  background: linear-gradient(135deg, #fff5f5, #ffffff);
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+  .container { padding: 15px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+  <h2>🌱 BrightPath</h2>
+  <div>
+    <button onclick="toggleTheme()">🌙</button>
+    <a href="/logout" style="color:white;margin-left:10px;">Logout</a>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- QUOTE -->
+<div class="card" style="text-align:center;">
+  <h3>💡 Thought for You</h3>
+  <p id="quoteText"></p>
+  <button onclick="newQuote()">New Quote</button>
+</div>
+
+<!-- MOOD -->
+<div class="card">
+  <h3>🧠 Mood Check-in</h3>
+
+  <form id="moodForm">
+    <div style="display:flex;gap:10px;">
+      <button type="button" class="mood-btn" data-mood="Happy 😊">😊</button>
+      <button type="button" class="mood-btn" data-mood="Okay 😐">😐</button>
+      <button type="button" class="mood-btn" data-mood="Stressed 😟">😟</button>
+      <button type="button" class="mood-btn" data-mood="Anxious 😰">😰</button>
+      <button type="button" class="mood-btn" data-mood="Sad 😢">😢</button>
+    </div>
+
+    <input type="hidden" id="selectedMood" name="mood">
+    <input type="number" name="stressLevel" placeholder="Stress level (1-10)" required>
+
+    <button type="submit">Submit Mood</button>
+  </form>
+</div>
+
+<!-- SUGGESTION -->
+<div class="card" id="suggestionCard" style="display:none;">
+  <h3>💡 For You Right Now</h3>
+  <p id="suggestionText"></p>
+</div>
+
+<!-- BREATHING -->
+<div class="card" style="text-align:center;">
+  <h3>🫁 Breathing Exercise</h3>
+  <div id="circle"></div>
+  <button onclick="startBreathing()">Start</button>
+  <button onclick="stopBreathing()" style="background:#ef4444;">Stop</button>
+</div>
+
+<!-- WIND DOWN -->
+<div class="card" style="text-align:center;">
+  <h3>🌙 Wind-Down Mode</h3>
+  <p>Relax your mind before resting</p>
+  <button onclick="startWindDown()">Start Wind-Down</button>
+</div>
+
+<!-- JOURNAL -->
+<div class="card">
+  <h3>📓 Journal</h3>
+  <form id="journalForm">
+    <textarea name="content" rows="4" placeholder="Write your thoughts..." required></textarea>
+    <button type="submit">Save</button>
+  </form>
+</div>
+
+<!-- ANONYMOUS -->
+<div class="card">
+  <h3>🕊️ Anonymous Confession</h3>
+  <p style="font-size:14px;color:gray;">
+    This message is completely anonymous.
+  </p>
+  <form id="anonymousForm">
+    <textarea name="message" rows="4" placeholder="Share freely..." required></textarea>
+    <button type="submit">Submit Anonymously</button>
+  </form>
+</div>
+
+<!-- CRISIS -->
+<div class="card" id="crisisCard">
+  <h3>🆘 Crisis Support</h3>
+  <p style="font-size:14px;">
+    If you feel overwhelmed or unsafe, help is available:
+  </p>
+  <ul style="font-size:14px;">
+    <li><b>🇮🇳 AASRA:</b> 91-9820466726</li>
+    <li><b>🇮🇳 Kiran:</b> 1800-599-0019</li>
+    <li><b>🌍 Global:</b> <a href="https://findahelpline.com" target="_blank">findahelpline.com</a></li>
+  </ul>
+  <p style="font-size:12px;color:gray;">
+    BrightPath is not a substitute for professional care.
+  </p>
+</div>
+
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* THEME */
+function toggleTheme(){
+  document.body.classList.toggle("dark");
+  localStorage.setItem("theme",
+    document.body.classList.contains("dark") ? "dark":"light");
+}
+if(localStorage.getItem("theme")==="dark") document.body.classList.add("dark");
+
+/* TOAST */
+function showToast(msg){
+  const t=document.getElementById("toast");
+  t.innerText=msg;
+  t.style.opacity=1;
+  setTimeout(()=>t.style.opacity=0,2500);
+}
+
+/* QUOTES */
+const quotes=[
+  "🌱 One step at a time is still progress.",
+  "💙 You are doing better than you think.",
+  "🌈 Tough days don’t last forever.",
+  "🧠 Take care of your mind.",
+  "✨ Pause. Breathe. Reset."
+];
+function newQuote(){
+  document.getElementById("quoteText").innerText =
+    quotes[Math.floor(Math.random()*quotes.length)];
+}
+newQuote();
+
+/* MOOD */
+const buttons=document.querySelectorAll(".mood-btn");
+const moodInput=document.getElementById("selectedMood");
+buttons.forEach(b=>{
+  b.onclick=()=>{
+    buttons.forEach(x=>x.classList.remove("active"));
+    b.classList.add("active");
+    moodInput.value=b.dataset.mood;
+  };
+});
+
+/* SUGGESTION */
+function showSuggestion(m){
+  const c=document.getElementById("suggestionCard");
+  const t=document.getElementById("suggestionText");
+  c.style.display="block";
+
+  if(m.includes("Stressed")||m.includes("Anxious")||m.includes("Sad")){
+    t.innerText="💙 Things remind us to slow down. Support is available.";
+    document.getElementById("crisisCard")
+      .scrollIntoView({behavior:"smooth"});
+  } else if(m.includes("Happy")){
+    t.innerText="🌱 Capture this moment with gratitude.";
+  } else {
+    t.innerText="🧠 Checking in is a healthy habit.";
+  }
+}
+
+/* MOOD SUBMIT */
+document.getElementById("moodForm").onsubmit=e=>{
+  e.preventDefault();
+  if(!moodInput.value){showToast("Select a mood");return;}
+  fetch("/mood",{method:"POST",body:new FormData(e.target)})
+  .then(()=>{
+    showToast("Mood saved");
+    showSuggestion(moodInput.value);
+  });
+};
+
+/* VOICE */
+function speak(t){
+  speechSynthesis.speak(new SpeechSynthesisUtterance(t));
+}
+
+/* BREATHING */
+let interval;
+function startBreathing(){
+  speak("Inhale");
+  document.getElementById("circle").style.transform="scale(1.5)";
+  interval=setInterval(()=>{
+    speak("Exhale");
+    document.getElementById("circle").style.transform="scale(1)";
+    setTimeout(()=>{
+      speak("Inhale");
+      document.getElementById("circle").style.transform="scale(1.5)";
+    },4000);
+  },8000);
+}
+function stopBreathing(){
+  clearInterval(interval);
+  speechSynthesis.cancel();
+}
+
+/* WIND DOWN */
+function startWindDown(){
+  document.body.classList.add("dark");
+  speak("Slow down. Focus on your breath.");
+  startBreathing();
+  showToast("Wind-down started");
+}
+
+/* ANONYMOUS */
+document.getElementById("anonymousForm").onsubmit=e=>{
+  e.preventDefault();
+  fetch("/anonymous",{method:"POST",body:new FormData(e.target)})
+  .then(()=>{showToast("Message sent anonymously");e.target.reset();});
+};
+</script>
+
+</body>
+</html>
