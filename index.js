@@ -1,41 +1,38 @@
-// ================= IMPORTS =================
+// ================== IMPORTS ==================
 const express = require("express");
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
 const session = require("express-session");
 const path = require("path");
 
+// ================== APP INIT ==================
 const app = express();
 
-// ================= MIDDLEWARE =================
+// ================== MIDDLEWARE (VERY IMPORTANT) ==================
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static("public"));
 
 app.use(
   session({
-    secret: "brightpath_secret_key",
+    secret: process.env.SESSION_SECRET || "brightpath_secret",
     resave: false,
     saveUninitialized: false
   })
 );
 
-// ================= MONGODB =================
-mongoose.connect(process.env.MONGO_URI)
-.then(() => console.log("✅ MongoDB connected"))
-.catch(err => console.log("❌ MongoDB error:", err));
+// ================== MONGODB CONNECT ==================
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("✅ MongoDB connected"))
+  .catch(err => console.error("❌ MongoDB error:", err));
 
-// ================= SCHEMAS =================
-
-// User
+// ================== SCHEMAS ==================
 const UserSchema = new mongoose.Schema({
   name: String,
   email: String,
-  password: String,
-  role: { type: String, default: "student" }
+  password: String
 });
 
-// Mood
 const MoodSchema = new mongoose.Schema({
   userEmail: String,
   mood: String,
@@ -43,150 +40,126 @@ const MoodSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
-// Journal
 const JournalSchema = new mongoose.Schema({
   userEmail: String,
   content: String,
   createdAt: { type: Date, default: Date.now }
 });
 
-// Feedback (identified)
-const FeedbackSchema = new mongoose.Schema({
-  userEmail: String,
-  message: String,
-  createdAt: { type: Date, default: Date.now }
-});
-
-// Anonymous Confession
 const AnonymousSchema = new mongoose.Schema({
   message: String,
   createdAt: { type: Date, default: Date.now }
 });
 
-// ================= MODELS =================
+// ================== MODELS ==================
 const User = mongoose.model("User", UserSchema);
 const Mood = mongoose.model("Mood", MoodSchema);
 const Journal = mongoose.model("Journal", JournalSchema);
-const Feedback = mongoose.model("Feedback", FeedbackSchema);
 const Anonymous = mongoose.model("Anonymous", AnonymousSchema);
 
-// ================= AUTH =================
+// ================== AUTH MIDDLEWARE ==================
 function isLoggedIn(req, res, next) {
-  req.session.user ? next() : res.redirect("/login.html");
+  if (!req.session.user) {
+    return res.redirect("/login.html");
+  }
+  next();
 }
 
-function isAdmin(req, res, next) {
-  req.session.role === "admin" ? next() : res.send("❌ Access denied");
-}
+// ================== ROUTES ==================
 
-// ================= ROUTES =================
-
-// Home
+// HOME
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-// ================= AUTH =================
+// SIGNUP
 app.post("/signup", async (req, res) => {
-  const { name, email, password } = req.body;
-  if (await User.findOne({ email })) return res.send("User exists");
+  const { name, email, password } = req.body || {};
+  if (!email || !password) return res.send("Missing fields");
 
-  const hashed = await bcrypt.hash(password, 10);
-  await User.create({ name, email, password: hashed });
+  const exists = await User.findOne({ email });
+  if (exists) return res.send("User already exists");
+
+  await User.create({ name, email, password });
   res.redirect("/login.html");
 });
 
+// LOGIN
 app.post("/login", async (req, res) => {
-  const { email, password } = req.body;
-  const user = await User.findOne({ email });
+  const { email, password } = req.body || {};
+  if (!email || !password) return res.send("Missing credentials");
+
+  const user = await User.findOne({ email, password });
   if (!user) return res.send("Invalid credentials");
 
-  const match = await bcrypt.compare(password, user.password);
-  if (!match) return res.send("Invalid credentials");
-
-  req.session.user = user.email;
-  req.session.role = user.role;
-
-  user.role === "admin"
-    ? res.redirect("/admin")
-    : res.redirect("/dashboard.html");
+  req.session.user = user;
+  res.redirect("/dashboard.html");
 });
 
+// LOGOUT
 app.get("/logout", (req, res) => {
-  req.session.destroy();
-  res.redirect("/login.html");
+  req.session.destroy(() => {
+    res.redirect("/login.html");
+  });
 });
 
-// ================= DASHBOARD =================
-app.get("/dashboard", isLoggedIn, (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "dashboard.html"));
-});
-
-// ================= MOOD =================
+// ================== MOOD ==================
 app.post("/mood", isLoggedIn, async (req, res) => {
+  const { mood, stressLevel } = req.body || {};
+  if (!mood) return res.status(400).send("Mood required");
+
   await Mood.create({
-    userEmail: req.session.user,
-    mood: req.body.mood,
-    stressLevel: req.body.stressLevel
+    userEmail: req.session.user.email,
+    mood,
+    stressLevel
   });
-  res.send("Mood saved");
+
+  res.sendStatus(200);
 });
 
-app.get("/my-moods", isLoggedIn, async (req, res) => {
-  const moods = await Mood.find({ userEmail: req.session.user })
-    .sort({ createdAt: -1 });
-  res.json(moods);
-});
-
-// ================= JOURNAL =================
+// ================== JOURNAL ==================
 app.post("/journal", isLoggedIn, async (req, res) => {
+  const { content } = req.body || {};
+  if (!content) return res.status(400).send("Content required");
+
   await Journal.create({
-    userEmail: req.session.user,
-    content: req.body.content
+    userEmail: req.session.user.email,
+    content
   });
-  res.send("Journal saved");
+
+  res.sendStatus(200);
 });
 
-app.get("/my-journals", isLoggedIn, async (req, res) => {
-  const journals = await Journal.find({ userEmail: req.session.user })
-    .sort({ createdAt: -1 });
-  res.json(journals);
-});
-
-// ================= FEEDBACK =================
-app.post("/feedback", isLoggedIn, async (req, res) => {
-  await Feedback.create({
-    userEmail: req.session.user,
-    message: req.body.message
-  });
-  res.send("Feedback saved");
-});
-
-// ================= ANONYMOUS =================
+// ================== ANONYMOUS ==================
 app.post("/anonymous", async (req, res) => {
-  await Anonymous.create({ message: req.body.message });
-  res.send("Anonymous message received");
+  const { message } = req.body || {};
+  if (!message) return res.status(400).send("Message required");
+
+  await Anonymous.create({ message });
+  res.sendStatus(200);
 });
 
-// ================= ADMIN =================
-app.get("/admin", isLoggedIn, isAdmin, (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "admin.html"));
-});
+// ================== ADMIN ==================
+app.get("/admin/data", async (req, res) => {
+  const { email, mood } = req.query;
 
-app.get("/admin/data", isLoggedIn, isAdmin, async (req, res) => {
-  const moods = await Mood.find().sort({ createdAt: -1 });
-  const feedbacks = await Feedback.find().sort({ createdAt: -1 });
+  const moodQuery = {};
+  if (email) moodQuery.userEmail = email;
+  if (mood) moodQuery.mood = mood;
+
+  const moods = await Mood.find(moodQuery).sort({ createdAt: -1 });
+  const feedbacks = await Journal.find().sort({ createdAt: -1 });
+
   res.json({ moods, feedbacks });
 });
 
-app.get("/admin/anonymous", isLoggedIn, isAdmin, async (req, res) => {
-  const messages = await Anonymous.find().sort({ createdAt: -1 });
-  res.json(messages);
+app.get("/admin/anonymous", async (req, res) => {
+  const data = await Anonymous.find().sort({ createdAt: -1 });
+  res.json(data);
 });
 
-// ================= SERVER =================
+// ================== SERVER ==================
 const PORT = process.env.PORT || 3000;
-
 app.listen(PORT, () => {
   console.log(`🚀 BrightPath running on port ${PORT}`);
 });
