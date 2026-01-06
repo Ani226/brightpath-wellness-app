@@ -105,8 +105,13 @@ app.get("/logout", (req, res) => {
 
 // ================== MOOD ==================
 app.post("/mood", isLoggedIn, async (req, res) => {
-  const { mood, stressLevel } = req.body || {};
-  if (!mood) return res.status(400).send("Mood required");
+  const body = req.body || {};
+  const mood = body.mood;
+  const stressLevel = body.stressLevel;
+
+  if (!mood) {
+    return res.status(400).send("Mood is required");
+  }
 
   await Mood.create({
     userEmail: req.session.user.email,
@@ -132,8 +137,12 @@ app.post("/journal", isLoggedIn, async (req, res) => {
 
 // ================== ANONYMOUS ==================
 app.post("/anonymous", async (req, res) => {
-  const { message } = req.body || {};
-  if (!message) return res.status(400).send("Message required");
+  const body = req.body || {};
+  const message = body.message;
+
+  if (!message || message.trim() === "") {
+    return res.status(400).send("Message is required");
+  }
 
   await Anonymous.create({ message });
   res.sendStatus(200);
