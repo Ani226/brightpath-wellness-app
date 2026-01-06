@@ -3,7 +3,6 @@
 // BrightPath Backend
 // ========================
 
-require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const session = require("express-session");
@@ -202,3 +201,4 @@ app.post("/feedback", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`🚀 BrightPath running on port ${PORT}`);
 });
+
